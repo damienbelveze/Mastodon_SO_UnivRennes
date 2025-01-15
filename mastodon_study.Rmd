@@ -1,5 +1,6 @@
 ---
-title: "Rapport_mastodon"
+title: "Bilan d'une année d'expérience avec Mastodon"
+author: "Damien Belvèze" 
 output: html_document
 date: "2025-01-15"
 ---
@@ -14,43 +15,60 @@ auth_setup()
 id <- "112370075539544475"
 followers <- get_account_followers(id)
 get_account_following(id)
-df <- get_account_statuses(id, limit = 300L)
-write_csv(df, "SO_univrennes_toots.csv")
+dataframe <- get_account_statuses(id, limit = 300L)
+write_csv(dataframe, "SO_univrennes_toots.csv")
 write_csv(followers, "followers.csv")
 ```
 
-```{r}
+
+
+```{r load statuses, include=FALSE}
 library(dplyr)
 library(tidyverse)
-df2 <- read.csv('SO_univrennes_toots_saved.csv')
+dataframe <- read.csv('SO_univrennes_toots_saved.csv')
 followers <- read.csv('followers.csv')
-print(df2)
+print(dataframe)
 ```
 
 # followers
 
-```{r}
+## Liste des followers
+
+```{r followers list, echo=FALSE}
 followers_url <- (followers$url)
 print(followers$url)
 
 ```
 
+## Instances des followers
 
+```{r instance des followers, echo=FALSE}
+library(stringr)
+followers_url <- data.frame(followers_url, stringsAsFactors = FALSE)
+followers_url <- followers_url %>%
+  mutate(
+    user_instance = str_split(followers_url, "://|@", simplify = TRUE)[, 2], # Second part (domain)
+    user_alias = paste0("@", str_split(followers_url, "://|@", simplify = TRUE)[, 3]) # Third part (alias)
+  )
+instance <- unlist(followers_url$user_instance)
+instance_count <- table(instance)
+instance_count_dataframe <- as.data.frame(instance_count)
+colnames(instance_count_dataframe) <- c("instance", "nombre")
+instance_count_dataframe <- instance_count_dataframe %>%
+  arrange(desc(nombre))
+print(instance_count_dataframe)
 
-```{r}
-library(rtoot)
-library(lubridate)
-id <- "112370075539544475"
-df2 <- get_account_statuses(id, limit = 300L )
 ```
 
-```{r}
+
+
+```{r traitement de la colonne content, include=FALSE}
 # Load necessary libraries
 library(rvest)
 library(purrr)
 
-# Assuming df2 is your dataframe and 'content' is the column with HTML text
-df2$content <- map_chr(df2$content, function(x) {
+# Assuming dataframe2 is your dataframe and 'content' is the column with HTML text
+dataframe$content <- map_chr(dataframe$content, function(x) {
   tryCatch({
     # Read the HTML content as text and extract plain text
     read_html(x) %>% html_text()
@@ -60,75 +78,131 @@ df2$content <- map_chr(df2$content, function(x) {
   })
 })
 
-write_csv(df2, "SO_univrennes_toots_content.csv")# Now df2$content will have the text without HTML tags
+write_csv(dataframe, "SO_univrennes_toots_content.csv")# Now dataframe2$content will have the text without HTML tags
 ```
 
+# longueur des toots
 
-```{r}
+## répartition des toots par leur longueur en nombre de caractères
+
+```{r distribution longueur toots, echo=FALSE}
 library(tidyverse)
+library(dplyr)
 extract_application <- function(application) {
   if (length(application) == 0) { 
     return(NA) 
   } else { return(application$name) }
 }
 ```
-```{r}
-#df3 <- get_account_statuses(id,  limit = 300) 
-df2 %>% mutate(interface = map_chr(application, extract_application), length = nchar(content)) %>% filter(!is.na(interface)) %>% ggplot(aes(x = interface, y = length)) + geom_dotplot(binaxis = "y", stackdir = "center", dotsize = 0.5)
 
+
+```{r eval=FALSE, include=FALSE}
+library(tidyverse)
+library(ggplot2)
+dataframe <- get_account_statuses(id, limit = 300L) 
+tree <- dataframe %>% mutate(interface = map_chr(application, extract_application), length = nchar(content)) %>% filter(!is.na(interface)) %>% ggplot(aes(x = interface, y = length)) + geom_dotplot(binaxis = "y", stackdir = "center", dotsize = 0.5)
+
+png("tree.png")
+print(tree)
+dev.off()
+```
+
+![](tree.png)
+
+```{r eval=FALSE, include=FALSE}
+dataframe %>%
+  mutate(
+    interface = map_chr(application, extract_application),
+    length = nchar(content)
+  ) %>%
+  filter(!is.na(interface)) %>%
+  ggplot(aes(x = interface, y = length)) +
+  geom_dotplot(binaxis = "y", stackdir = "center", dotsize = 0.5)
 ```
 
 
-```{r include=FALSE}
-toot_length <- df2%>%summarise(mean(length(application)))
-```
-Longuyeur moyenne des toots en nombre de caractères : 
-```{r include=TRUE}
+## Longueur moyenne des toots en nombre de caractères : 
+
+```{r longueur moyenne toots, echo=FALSE}
+toot_length <- dataframe%>%summarise(mean(length(application)))
 print(toot_length)
 ```
 
 
 # Liste des hashtags utilisés 
 
-```{r}
+```{r liste hashtags, echo=FALSE}
 library(stringr)
 
 # Extract all words starting with '#' from the 'content' column
-df2$hashtags <- str_extract_all(df2$content, "#\\w+")
+dataframe$hashtags <- str_extract_all(dataframe$content, "#\\w+")
 # Unnest the list of hashtags into a single vector
-hashtags <- unlist(df2$hashtags)
+hashtags <- unlist(dataframe$hashtags)
 
 # Count the frequency of each hashtag
 hashtag_count <- table(hashtags)
 
 # Convert the result into a data frame (optional, for easier handling)
-hashtag_count_df <- as.data.frame(hashtag_count)
+hashtag_count_dataframe <- as.data.frame(hashtag_count)
 
 # Rename columns for clarity
-colnames(hashtag_count_df) <- c("hashtag", "count")
+colnames(hashtag_count_dataframe) <- c("hashtag", "count")
 
 # Sort the data frame by frequency (optional)
-hashtag_count_df <- hashtag_count_df %>%
+hashtag_count_dataframe <- hashtag_count_dataframe %>%
   arrange(desc(count))
 
 # View the resulting data frame
-print(hashtag_count_df)
+print(hashtag_count_dataframe)
 ```
 
+# langue utilisée pour les toots de SO_UnivRennes
 
-```{r}
+```{r langue utilisée, include=FALSE}
 library(textcat)
-df2$language <- textcat(df2$content)
-print(df2$language)
-language_count <- table(df2$language)
+dataframe$language <- textcat(dataframe$content)
+print(dataframe$language)
+language_count <- table(dataframe$language)
 library(dplyr)
 
 # Count the number of texts in each language (English vs French)
-language_count <- df2 %>%
+language_count <- dataframe %>%
+  filter(!is.na(language) & language != "") %>%
   group_by(language) %>%
-  summarise(count = n())
+  summarise(count = n(), .groups = "drop")
+
+english_count <- language_count %>%
+  filter(language == "english") %>%
+  pull(count)
+
+french_count <- language_count %>%
+  filter(language == "french") %>%
+  pull(count)
 
 # Print the results
-print(language_count)
-```
+print(english_count)
+print(french_count)
 
+
+#ggplot(language_count, aes(x = "", y = count, fill = language)) +
+#  geom_col(width = 1) +
+#  coord_polar(theta = "y") +
+#  labs(title = "Distribution des Langues dans les toots", x = NULL, y = NULL) +
+#  theme_void() +
+#  theme(legend.title = element_blank())
+```
+```{r echo=FALSE}
+
+language_pie <- data.frame(
+  language = c("English", "French"),
+  count = c(english_count, french_count)
+)
+
+# Create the pie chart
+ggplot(language_pie, aes(x = "", y = count, fill = language)) +
+  geom_col(width = 1) + # Bar chart
+  coord_polar(theta = "y") + # Convert to pie chart
+  labs(title = "Language Distribution", x = NULL, y = NULL) +
+  theme_void() + # Remove unnecessary chart elements
+  theme(legend.title = element_blank())
+```
