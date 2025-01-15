@@ -4,13 +4,37 @@ output: html_document
 date: "2025-01-15"
 ---
 
-```{r}
+
+```{r authentification avec rtoot, eval=FALSE, include=FALSE}
 library(rtoot)
-id <- "112370075539544475"auth
-get_account_followers(id)
-get_account_following(id)
-get_account_statuses(id, limit = 300L)
+auth_setup()
 ```
+
+```{r extraction de données avec rtoot, eval=FALSE, include=FALSE}
+id <- "112370075539544475"
+followers <- get_account_followers(id)
+get_account_following(id)
+df <- get_account_statuses(id, limit = 300L)
+write_csv(df, "SO_univrennes_toots.csv")
+write_csv(followers, "followers.csv")
+```
+
+```{r}
+library(dplyr)
+library(tidyverse)
+df2 <- read.csv('SO_univrennes_toots_saved.csv')
+followers <- read.csv('followers.csv')
+print(df2)
+```
+
+# followers
+
+```{r}
+followers_url <- (followers$url)
+print(followers$url)
+
+```
+
 
 
 ```{r}
@@ -36,7 +60,7 @@ df2$content <- map_chr(df2$content, function(x) {
   })
 })
 
-write_csv(df2, "SO_univrennes_toots.csv")# Now df2$content will have the text without HTML tags
+write_csv(df2, "SO_univrennes_toots_content.csv")# Now df2$content will have the text without HTML tags
 ```
 
 
@@ -54,6 +78,17 @@ df2 %>% mutate(interface = map_chr(application, extract_application), length = n
 
 ```
 
+
+```{r include=FALSE}
+toot_length <- df2%>%summarise(mean(length(application)))
+```
+Longuyeur moyenne des toots en nombre de caractères : 
+```{r include=TRUE}
+print(toot_length)
+```
+
+
+# Liste des hashtags utilisés 
 
 ```{r}
 library(stringr)
