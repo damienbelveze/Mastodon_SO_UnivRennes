@@ -1,0 +1,99 @@
+---
+title: "Rapport_mastodon"
+output: html_document
+date: "2025-01-15"
+---
+
+```{r}
+library(rtoot)
+id <- "112370075539544475"auth
+get_account_followers(id)
+get_account_following(id)
+get_account_statuses(id, limit = 300L)
+```
+
+
+```{r}
+library(rtoot)
+library(lubridate)
+id <- "112370075539544475"
+df2 <- get_account_statuses(id, limit = 300L )
+```
+
+```{r}
+# Load necessary libraries
+library(rvest)
+library(purrr)
+
+# Assuming df2 is your dataframe and 'content' is the column with HTML text
+df2$content <- map_chr(df2$content, function(x) {
+  tryCatch({
+    # Read the HTML content as text and extract plain text
+    read_html(x) %>% html_text()
+  }, error = function(e) {
+    # Return the original content if there is an error
+    return(x)
+  })
+})
+
+write_csv(df2, "SO_univrennes_toots.csv")# Now df2$content will have the text without HTML tags
+```
+
+
+```{r}
+library(tidyverse)
+extract_application <- function(application) {
+  if (length(application) == 0) { 
+    return(NA) 
+  } else { return(application$name) }
+}
+```
+```{r}
+#df3 <- get_account_statuses(id,  limit = 300) 
+df2 %>% mutate(interface = map_chr(application, extract_application), length = nchar(content)) %>% filter(!is.na(interface)) %>% ggplot(aes(x = interface, y = length)) + geom_dotplot(binaxis = "y", stackdir = "center", dotsize = 0.5)
+
+```
+
+
+```{r}
+library(stringr)
+
+# Extract all words starting with '#' from the 'content' column
+df2$hashtags <- str_extract_all(df2$content, "#\\w+")
+# Unnest the list of hashtags into a single vector
+hashtags <- unlist(df2$hashtags)
+
+# Count the frequency of each hashtag
+hashtag_count <- table(hashtags)
+
+# Convert the result into a data frame (optional, for easier handling)
+hashtag_count_df <- as.data.frame(hashtag_count)
+
+# Rename columns for clarity
+colnames(hashtag_count_df) <- c("hashtag", "count")
+
+# Sort the data frame by frequency (optional)
+hashtag_count_df <- hashtag_count_df %>%
+  arrange(desc(count))
+
+# View the resulting data frame
+print(hashtag_count_df)
+```
+
+
+```{r}
+library(textcat)
+df2$language <- textcat(df2$content)
+print(df2$language)
+language_count <- table(df2$language)
+library(dplyr)
+
+# Count the number of texts in each language (English vs French)
+language_count <- df2 %>%
+  group_by(language) %>%
+  summarise(count = n())
+
+# Print the results
+print(language_count)
+```
+
