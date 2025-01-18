@@ -11,35 +11,64 @@ library(rtoot)
 auth_setup()
 ```
 
-```{r extraction de données avec rtoot, eval=FALSE, include=FALSE}
+```{r extraction de données avec rtoot, include=FALSE}
 library(readr)
+library(rtoot)
+library(tidyverse)
+library(dplyr)
+
 id <- "112370075539544475"
-followers <- get_account_followers(id, limit = 200L)
-relationships <- get_account_relationships(id)
-dataframe <- get_account_statuses(id, limit = 300L)
-print(followers)
+followers <- get_account_followers(id, limit = 300L)
+following <- get_account_following(id, limit = 300L)
+#relationships <- get_account_relationships(id, limit = 300L)
+dataframe <- get_account_statuses(id, limit = 400L)
+followers_number <- length(followers$id)
+following_number <- length(following$id)
+#relationships_number <- length(relationships$id)
+status_number <- length(dataframe$id)
+#print(dataframe)
+
 write_csv(dataframe, "SO_univrennes_toots.csv")
 write_csv(followers, "followers.csv")
-write_csv(relationships, "relationships.csv")
+#write_csv(relationships, "relationships.csv")
+#print(followers)
+#print(followers_number)
 ```
+- Le compte Mastodon SO_UnivRennes comporte `r followers_number` followers. 
+- Nous sommes actuellement abonnés à `r following_number` comptes.  
+- A travers ce compte, nous avons envoyé `r status_number`status constitués à la fois de "toots" et de "boosts"  
 
 
-
-```{r load statuses, include=FALSE}
-library(dplyr)
-library(tidyverse)
-dataframe <- read.csv('SO_univrennes_toots_saved.csv')
-followers <- read.csv('followers.csv')
-print(dataframe)
-```
 
 # followers
 
+Qui sont nos followers et qu'est-ce qui les intéresse ? 
+
 ## Liste des followers
 
-```{r followers list, echo=FALSE}
-followers_url <- (followers$url)
-print(followers$url)
+
+## mots-clé liés aux followers
+
+
+```{r}
+library(dplyr)
+library(stringr)
+#pattern <- "\"https.*/tags/.*\""
+pattern <- "(?<=/tags/)[^<\"]+"
+# Apply the regex and extract the matched parts into a new column 'tag'
+followers <- followers %>%
+  mutate(tag = str_extract(followers$note, pattern))
+followers$tag <- URLdecode(followers$tag)
+tag_list <- followers$tag %>%
+    .[!is.na(.) & . != "NA"]   # Extract the 'tag' column as a vector
+#  unique()                 # Get unique tags
+
+# Print the list of unique tags
+cat(tag_list)
+write.csv(tag_list,"tag_list.csv")
+write.csv(followers,"followers.csv")
+
+
 
 ```
 
@@ -48,6 +77,7 @@ print(followers$url)
 ```{r instance des followers, echo=FALSE}
 # extracting instances from accounts can also be performed within rtoot : https://schochastics.github.io/rtoot2022/#/interlude-extract-instances-from-statuses-1
 library(stringr)
+followers_url <- (followers$url)
 followers_url <- data.frame(followers_url, stringsAsFactors = FALSE)
 followers_url <- followers_url %>%
   mutate(
@@ -89,6 +119,7 @@ write_csv(dataframe, "SO_univrennes_toots_content.csv")# Now dataframe2$content 
 
 
 ```{r}
+
 library(rtoot)
 
 # Account ID of the main account
@@ -99,6 +130,11 @@ followers_list <- get_account_followers(id)
 
 # Check structure of followers_list
 if (!is.null(followers_list) && "id" %in% names(followers_list)) {
+  # Ensure display_name exists and has the correct length
+  if (!"display_name" %in% names(followers_list)) {
+    followers_list$display_name <- rep("", length(followers_list$id))
+  }
+
   # Function to count followers for each user with error handling
   count_followers <- function(follower_id) {
     user_info <- tryCatch(
@@ -118,23 +154,35 @@ if (!is.null(followers_list) && "id" %in% names(followers_list)) {
   # Iterate over followers and count their followers
   follower_counts <- sapply(followers_list$id, count_followers)
 
-  # Create a data frame to display follower counts
-  result <- data.frame(
-    follower_name = followers_list$display_name,
-    follower_count = follower_counts,
-    stringsAsFactors = FALSE,
-  )
+  # Ensure lengths match before creating data frame
+  if (length(follower_counts) == length(followers_list$id)) {
+    # Create a data frame to display follower counts
+    result <- data.frame(
+      follower_name = followers_list$display_name,
+      follower_count = follower_counts,
+      stringsAsFactors = FALSE
+    )
 
-  # View the results
-  #result <- result[order(-result$follower_count),]
-  print(result)
-  write.csv(result, "followers_count.csv")
+    # View the results
+    # result <- result[order(-result$follower_count),]
+    print(result)
+    write.csv(result, "followers_count.csv")
+  } else {
+    stop("Mismatch in lengths between followers_list and follower_counts.")
+  }
 } else {
   stop("Failed to fetch followers list or unexpected structure.")
 }
 
 
 ```
+
+
+
+
+
+
+
 
 ```{r}
 result2 <-read.csv("followers_count.csv")
@@ -301,24 +349,5 @@ timeline <- get_timeline_list(
 ```
 
 
-### Mastodon Python API
 
-from mastodon import Mastodon
-
-```{python}
-from mastodon import Mastodon
-Mastodon.create_app(
-    'pytooterapp',
-    api_base_url = 'https://mastodon.social',
-    to_file = 'pytooter_clientcred.secret'
-)
-
-
-mastodon = Mastodon(client_id = 'pytooter_clientcred.secret',)
-mastodon.log_in(
-    '@SO_UnivRennes@mastodon.social',
-    'tEa.-XO2wfo#',
-    to_file = 'pytooter_usercred.secret'
-)
-```
 
