@@ -12,12 +12,15 @@ auth_setup()
 ```
 
 ```{r extraction de données avec rtoot, eval=FALSE, include=FALSE}
+library(readr)
 id <- "112370075539544475"
-followers <- get_account_followers(id)
-get_account_following(id)
+followers <- get_account_followers(id, limit = 200L)
+relationships <- get_account_relationships(id)
 dataframe <- get_account_statuses(id, limit = 300L)
+print(followers)
 write_csv(dataframe, "SO_univrennes_toots.csv")
 write_csv(followers, "followers.csv")
+write_csv(relationships, "relationships.csv")
 ```
 
 
@@ -43,6 +46,7 @@ print(followers$url)
 ## Instances des followers
 
 ```{r instance des followers, echo=FALSE}
+# extracting instances from accounts can also be performed within rtoot : https://schochastics.github.io/rtoot2022/#/interlude-extract-instances-from-statuses-1
 library(stringr)
 followers_url <- data.frame(followers_url, stringsAsFactors = FALSE)
 followers_url <- followers_url %>%
@@ -59,7 +63,6 @@ instance_count_dataframe <- instance_count_dataframe %>%
 print(instance_count_dataframe)
 
 ```
-
 
 
 ```{r traitement de la colonne content, include=FALSE}
@@ -81,9 +84,71 @@ dataframe$content <- map_chr(dataframe$content, function(x) {
 write_csv(dataframe, "SO_univrennes_toots_content.csv")# Now dataframe2$content will have the text without HTML tags
 ```
 
-# longueur des toots
 
-## répartition des toots par leur longueur en nombre de caractères
+## acitvité des followers
+
+
+```{r}
+library(rtoot)
+
+# Account ID of the main account
+id <- "112370075539544475"
+
+# Fetch the followers list
+followers_list <- get_account_followers(id)
+
+# Check structure of followers_list
+if (!is.null(followers_list) && "id" %in% names(followers_list)) {
+  # Function to count followers for each user with error handling
+  count_followers <- function(follower_id) {
+    user_info <- tryCatch(
+      get_account(follower_id), # Use get_account for specific user details
+      error = function(e) {
+        warning(paste("Error fetching data for user ID:", follower_id))
+        return(NULL)
+      }
+    )
+    if (!is.null(user_info) && "followers_count" %in% names(user_info)) {
+      return(user_info$followers_count)
+    } else {
+      return(NA)
+    }
+  }
+
+  # Iterate over followers and count their followers
+  follower_counts <- sapply(followers_list$id, count_followers)
+
+  # Create a data frame to display follower counts
+  result <- data.frame(
+    follower_name = followers_list$display_name,
+    follower_count = follower_counts,
+    stringsAsFactors = FALSE,
+  )
+
+  # View the results
+  #result <- result[order(-result$follower_count),]
+  print(result)
+  write.csv(result, "followers_count.csv")
+} else {
+  stop("Failed to fetch followers list or unexpected structure.")
+}
+
+
+```
+
+```{r}
+result2 <-read.csv("followers_count.csv")
+result2 <- result2[order(-result$follower_count),]
+print(result2)
+
+```
+
+## relationships
+
+
+## longueur des toots
+
+### répartition des toots par leur longueur en nombre de caractères
 
 ```{r distribution longueur toots, echo=FALSE}
 library(tidyverse)
@@ -107,6 +172,13 @@ print(tree)
 dev.off()
 ```
 
+
+
+
+
+
+
+
 ![](tree.png)
 
 ```{r eval=FALSE, include=FALSE}
@@ -121,7 +193,7 @@ dataframe %>%
 ```
 
 
-## Longueur moyenne des toots en nombre de caractères : 
+### Longueur moyenne des toots en nombre de caractères : 
 
 ```{r longueur moyenne toots, echo=FALSE}
 toot_length <- dataframe%>%summarise(mean(length(application)))
@@ -206,3 +278,47 @@ ggplot(language_pie, aes(x = "", y = count, fill = language)) +
   theme_void() + # Remove unnecessary chart elements
   theme(legend.title = element_blank())
 ```
+
+## Annexes
+
+### Timeline
+
+```{r timeline du compte, eval=FALSE, include=FALSE}
+library(rtoot)
+# voir https://gesistsa.github.io/rtoot/reference/get_timeline_home.html
+list_id <- c(id)
+timeline <- get_timeline_list(
+  list_id,
+  #max_id,
+  #since_id,
+  #min_id,
+  limit = 200L,
+  token = "mettre le token ici",
+  parse = TRUE,
+  retryonratelimit = TRUE,
+  verbose = TRUE
+)
+```
+
+
+### Mastodon Python API
+
+from mastodon import Mastodon
+
+```{python}
+from mastodon import Mastodon
+Mastodon.create_app(
+    'pytooterapp',
+    api_base_url = 'https://mastodon.social',
+    to_file = 'pytooter_clientcred.secret'
+)
+
+
+mastodon = Mastodon(client_id = 'pytooter_clientcred.secret',)
+mastodon.log_in(
+    '@SO_UnivRennes@mastodon.social',
+    'tEa.-XO2wfo#',
+    to_file = 'pytooter_usercred.secret'
+)
+```
+
