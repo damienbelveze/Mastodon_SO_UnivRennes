@@ -20,8 +20,18 @@ library(dplyr)
 id <- "112370075539544475"
 followers <- get_account_followers(id, limit = 300L)
 following <- get_account_following(id, limit = 300L)
+lists <- get_account_lists(id, token = NULL, parse = TRUE)
+print(lists)
 #relationships <- get_account_relationships(id, limit = 300L)
 dataframe <- get_account_statuses(id, limit = 400L)
+toots <- get_account_statuses(id, exclude_reblogs = TRUE, limit = 400L)
+sent <- as.integer(length(dataframe$id))
+toots <- as.integer(length(toots$id))
+boosts <- (sent - toots)
+reblogs <- sum(dataframe$reblogs_count)
+favourites <- sum(dataframe$favourites_count)
+replies <- sum(dataframe$replies_count)
+
 followers_number <- length(followers$id)
 following_number <- length(following$id)
 #relationships_number <- length(relationships$id)
@@ -34,9 +44,12 @@ write_csv(followers, "followers.csv")
 #print(followers)
 #print(followers_number)
 ```
-- Le compte Mastodon SO_UnivRennes comporte `r followers_number` followers. 
-- Nous sommes actuellement abonnés à `r following_number` comptes.  
-- A travers ce compte, nous avons envoyé `r status_number`status constitués à la fois de "toots" et de "boosts"  
+- Le compte Mastodon SO_UnivRennes comporte **`r followers_number` followers**. 
+- Nous sommes actuellement abonnés à **`r following_number` comptes**.  
+- A travers ce compte, nous avons envoyé **`r status_number` statuts** (toots) constitués à la fois de "toots" (`r toots`)et de "boosts" (`r boosts`) 
+- Les toots de SO_UnivRennes ont été **`r favourites` fois mis en favoris** par des membres du réseau  
+- Ils ont reçu **`r replies` réponses** de la part d'internautes. 
+- ils ont été boostés **`r reblogs` fois**. 
 
 
 
@@ -44,13 +57,18 @@ write_csv(followers, "followers.csv")
 
 Qui sont nos followers et qu'est-ce qui les intéresse ? 
 
+## présence dans des listes
+
+
+
+
 ## Liste des followers
 
 
 ## mots-clé liés aux followers
 
 
-```{r}
+```{r echo=FALSE}
 library(dplyr)
 library(stringr)
 #pattern <- "\"https.*/tags/.*\""
@@ -90,9 +108,11 @@ instance_count_dataframe <- as.data.frame(instance_count)
 colnames(instance_count_dataframe) <- c("instance", "nombre")
 instance_count_dataframe <- instance_count_dataframe %>%
   arrange(desc(nombre))
-print(instance_count_dataframe)
+head_instance_count_dataframe <- head(instance_count_dataframe, n=12)
+print(head_instance_count_dataframe)
 
 ```
+
 
 
 ```{r traitement de la colonne content, include=FALSE}
@@ -118,7 +138,7 @@ write_csv(dataframe, "SO_univrennes_toots_content.csv")# Now dataframe2$content 
 ## acitvité des followers
 
 
-```{r}
+```{r audience des followers, include=FALSE}
 
 library(rtoot)
 
@@ -165,7 +185,7 @@ if (!is.null(followers_list) && "id" %in% names(followers_list)) {
 
     # View the results
     # result <- result[order(-result$follower_count),]
-    print(result)
+    #print(result)
     write.csv(result, "followers_count.csv")
   } else {
     stop("Mismatch in lengths between followers_list and follower_counts.")
@@ -177,26 +197,20 @@ if (!is.null(followers_list) && "id" %in% names(followers_list)) {
 
 ```
 
+Liste des 10 followers les plus influents (ayant le plus de followers)
 
-
-
-
-
-
-
-```{r}
+```{r ordonnancement activité followers, echo=FALSE}
 result2 <-read.csv("followers_count.csv")
 result2 <- result2[order(-result$follower_count),]
-print(result2)
+head_result2 <- head(result2, n=10)
+print(head_result2)
 
 ```
 
-## relationships
+# Caractéristiques des toots envoyés par SO_UnivRennes
 
+## longueur moyenne des toots
 
-## longueur des toots
-
-### répartition des toots par leur longueur en nombre de caractères
 
 ```{r distribution longueur toots, echo=FALSE}
 library(tidyverse)
@@ -241,51 +255,55 @@ dataframe %>%
 ```
 
 
-### Longueur moyenne des toots en nombre de caractères : 
-
-```{r longueur moyenne toots, echo=FALSE}
+```{r longueur moyenne toots, eval=FALSE, include=FALSE}
 toot_length <- dataframe%>%summarise(mean(length(application)))
 print(toot_length)
 ```
 
+Les toots de SO_UnivRennes ont en moyenne une longueur de **292 caractères**
 
 # Liste des hashtags utilisés 
 
 ```{r liste hashtags, echo=FALSE}
 library(stringr)
 
-# Extract all words starting with '#' from the 'content' column
+# Extrait tous les hashtags de la colonne "content" du fichier statuts (SO_UNivRennes_toots.csv) au moyen d'une expression régulière
 dataframe$hashtags <- str_extract_all(dataframe$content, "#\\w+")
-# Unnest the list of hashtags into a single vector
+# constitue une liste avec l'ensemble des hashtags présents dans ce tableau
 hashtags <- unlist(dataframe$hashtags)
 
-# Count the frequency of each hashtag
+# compte la fréquence de tous ces hashtags
 hashtag_count <- table(hashtags)
 
-# Convert the result into a data frame (optional, for easier handling)
+# convertit le résultat de l'opération antérieure sous la forme d'un dataframe
 hashtag_count_dataframe <- as.data.frame(hashtag_count)
 
-# Rename columns for clarity
-colnames(hashtag_count_dataframe) <- c("hashtag", "count")
+# renomme les colonnes du tableau
+colnames(hashtag_count_dataframe) <- c("hashtag", "nombre")
 
-# Sort the data frame by frequency (optional)
+# ordonne la liste des hashtage par ordre décroissant de fréquence
 hashtag_count_dataframe <- hashtag_count_dataframe %>%
-  arrange(desc(count))
+  arrange(desc(nombre))
 
-# View the resulting data frame
-print(hashtag_count_dataframe)
+# affiche le résultat de ce traitemeent
+head_hashtag_count <- head(hashtag_count_dataframe, n=10)
+
+print(head_hashtag_count)
 ```
 
 # langue utilisée pour les toots de SO_UnivRennes
 
 ```{r langue utilisée, include=FALSE}
 library(textcat)
+
+# le package textcat permet de distinguer les contenus selon la langue
 dataframe$language <- textcat(dataframe$content)
 print(dataframe$language)
+# fait figurer les valeurs relatives à chaque langue dans un tableau
 language_count <- table(dataframe$language)
-library(dplyr)
 
-# Count the number of texts in each language (English vs French)
+
+# compte le nombre de textes en français et en anglais
 language_count <- dataframe %>%
   filter(!is.na(language) & language != "") %>%
   group_by(language) %>%
@@ -299,25 +317,14 @@ french_count <- language_count %>%
   filter(language == "french") %>%
   pull(count)
 
-# Print the results
-print(english_count)
-print(french_count)
-
-
-#ggplot(language_count, aes(x = "", y = count, fill = language)) +
-#  geom_col(width = 1) +
-#  coord_polar(theta = "y") +
-#  labs(title = "Distribution des Langues dans les toots", x = NULL, y = NULL) +
-#  theme_void() +
-#  theme(legend.title = element_blank())
-```
-```{r echo=FALSE}
 
 language_pie <- data.frame(
   language = c("English", "French"),
   count = c(english_count, french_count)
 )
+```
 
+```{r graphique langues, echo=FALSE}
 # Create the pie chart
 ggplot(language_pie, aes(x = "", y = count, fill = language)) +
   geom_col(width = 1) + # Bar chart
