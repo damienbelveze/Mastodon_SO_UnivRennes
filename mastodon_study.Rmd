@@ -80,23 +80,76 @@ Le Service Commun de la Documentation a vocation à contribuer par son expertise
 ## Pourquoi Mastodon
 
 Un service comme ARDEL pourrait se satisfaire de l'usage de son site web pour communiquer et de l'utilisation de flux RSS pour suivre les principales évolutions sur la Science Ouverte et la documentation électronique tant les sources d'information fiables et inspirantes sont nombreuses :  sites de revues spécialisées, sites d'institutions de recherche, de chercheurs et chercheuses, et de personnes appartenant au monde de la documentation et des bibliothèques. Devant le discrédit dans lequel X plonge une partie des autres réseaux sociaux, beaucoup d'individus actifs dans le monde du logiciel ou de la recherche quittent ces plateformes dites sociales pour passer plus de temps à lire les billets des sites qu'elles apprécient et à écrire et publier des billets sur leur propre site. 
+
+### Les flux RSS et les sites web ne suffisent pas
+
 Pour notre part, à titre personnel, mais aussi en tant que service, nous considérons que la fréquentation d'un réseau social ajoute à une veille qui reposerait sur des flux l'apport de conversations entre points de vue parfois opposés sur les objets de notre activité ; être témoins de ces conversations, nous permet de prendre en considération dans notre pratique davantage de points de vue et d'affiner nos réponses en fonction de la situation de nos interlocuteurs et interlocutrices. Prendre part à ces conversations permet a fortiori d'éprouver des arguments au contact de collègues ou de personnels de recherche qui ont une autre expérience de terrain que la nôtre. 
 
 Nous pensons toutefois que ces enrichissements ne peuvent avoir lieu que si leur contexte est parfaitement transparent. 
 Par transparence, nous entendons tout d'abord celle de l'algorithme de distribution des message : 
 Tout d'abord, nous devons nous assurer que tout ce qui est posté par un.e utilisatreur.ice du réseau nous parvient sans filtre, à la manière d'un flux RSS qui reproduit fidèlement tout ce qui est posté par la personne qu'on suit. Ce n'était plus le cas sur Twitter déjà bien avant qu'Elon Musk ne le rachète. Mastodon n'est qu'un logiciel dont le code source est accessible. Le réseau social Fedivers dépend d'un protocole (ActivityPub) qui préexistait au logiciel Mastodon et son code est également en accès libre. 
 
+### Communiquer, c'est faire du Commun
+
 Nous souhaitons par ailleurs investir du temps dans un Commun, car nous considérons que communiquer, ce n'est pas seulement échanger des messages, mais aussi contribuer au milieu (medium) qui permettra à ces échanges d'avoir lieu. Communiquer, comme le rappelle Arthur Perret, c'est aussi bâtir du Commun (@perretFaireCommun2023a), a contrario des réseaux sociaux centralisés qui privatisent (de la donnée personnelle) et privilégient des points de vue au détriment d'autres par des algorithmes opaques et déloyaux. 
+Créer du commun, c'est précisément interroger le medium qu'on utilise, ses règles, ses principes de modération, son articulation avec les médias voisins quand elle est techniquement possible. Par exemple, les instances de Mastodon peuvent techniquement communiquer avec celles de Threads (Meta), mais ne le souhaitent pas pour éviter que le Fédivers ne soit victime de la part de Meta d'une manoeuvre de style **embrace, extend and extinguish**. Avec Mastodon, il n'y a pas de propriétaire qui décide de cette interopérabilité pour tous. L'administrateurice d'une instance peut rendre le choix de l'ouverture possible à ses utilisateurices (sans pouvoir la rendre obligatoire) ou bien proposer que la connexion ne soit pas possible pour la raison stratégique évoquée. Ces débats ont lieu au sein des instances avec les utilisateurices. Il n'y pas de procédure de vote à notre connaissance, mais les personnes mécontentes de la décision prise peuvent sans perdre l'accès à leur communauté de followers quitter cette instance pour une autre qui correspond mieux à leurs options d'ouverture (ou de fermeture). Cet exemple, montre qu'il est possible de bâtir des Communs avec Mastodon, alors qu'un gouvernement centralisé dans les mains d'un propriétaire qui dispose de toutes les règles et décide de tous les paramétrages obère d'emblée cette construction.  
+
+### La décentralisation, l'atout maître de Mastodon
+
+Répétons-le, Mastodon n'est qu'un logiciel et pas un réseau social qui permet d'accéder à un réseau structuré par un protocole d'échange, ActivityPub, l'un et l'autre sont libres. 
+Pour les utilisateurices de X qui ne supportent pas la dégradation de plus en plus nette de leur expérience sur ce réseau et la toxicité accrue du réseau du fait d'une absence de modération, la difficulté d'intégrer Mastodon est en réalité ce qui constitue la richesse de cet écosystème : Mastodon comporte un grand nombre d'instances de tailles et de politiques différentes, et il faut en choisir une : Où atterrir ?
+Nous nous sommes évidemment posé la question et nous avons comparé les diverses instances qui accueillent les acteurs de la Science ainsi que celles qui travaillent dans le périmètre de l'Etat. Nous avons d'abord contacté l'instance gérée par la Direction du Numérique (Dinum) qui nous paraissait la plus appropriée, mais faute de réponse de l'administrateur à ce moment-là, nous avons opté pour la solution généraliste *mastodon.social*, celle qui compte le plus grand nombre de comptes hébergés à ce jour. Depuis, lors nous avons échangé avec les administrateurs de l'instance *[social.numerique.gouv.fr](https://social.numerique.gouv.fr/explore)* de la DINUM qui nous incitent à choisir leur serveur dédié aux services de l'Etat. Dans le même temps, nous sommes en contact avec un agent du Service interuniversitaire en charge de la mutualisation numérique en île-de-France (UNIF). L'UNIF se propose de lancer prochainement une instance destinée au monde universitaire qui intègrerait le protocole Shibboleth pour permettre à ses membres d'accéder à leur compte via leurs identifiants universitaires. Cette possibilité rendrait notre compte plus résistant aux attaques d'usurpation, dans la mesure où sur une instance dépourvue de ce type de gestion de droits, il n'est pas possible de mettre en place un système de double authentification impliquant une application idoine sur un smartphone commun. 
+
+Nous avons mentionné la dégradation de l'expérience usager sur une plateforme comme X/Twitter. Cory Doctorow qui a étudié ce phénomène commun à nombre de plateformes ultra-dominantes sur le marché à forgé à ce sujet le concept d'emmerdification (enshittification). Ce phénomène décrit la manière dont les propriétaires d'une plateforme accordent une telle importance au retour sur investissement pour satisfaire la demande actionnariale (ou politique en ce qui concerne Meta et Twitter) que non seulement les demandes des usagers ne sont plus prises en compte, mais en plus celles des partenaires commerciaux de moindre ampleur (publicitaires) sont également négligées. Les usagers, pour ne parler que d'eux, subissent cette dégradation pour ne pas perdre leur communauté et leurs contacts en quittant la plateforme et cela jusqu'au point de rupture qui peut prendre la forme d'un harcèlement. 
+aussi pour Cory Doctorow, ce n'est pas tant le fait que des capitaux privés soutiennent une infrastructure qui condamnent celle-ci à l'emmerdification à court ou moyen terme, mais le fait qu'elle rend ses usagers captifs de cette infrastructure (@doctorowEnshittificationIsntCaused2024). A contrario, comme on l'a vu plus haut, le Fédivers conserve à ses utilisateurices toute latitude pour quitter une instance dont l'administration ou la politique générale leur déplairait pour une autre plus proche de leurs options, et cela sans aucune perte de leur expérience passée. Comptes suivis, followers, listes, messages envoyés accompagnent le ou la migrante vers sa nouvelle maison.
+Cory Doctorow observe que si cette liberté est inscrite dans le code du protocole de Bluesky (AT), elle n'est toujours pas effective et rien ne garantit qu'elle ne le soit un jour (@doctorowBlueskyEnshittification2025) et que cette incertitude devrait nous conduire à opter pour la solution qui tient d'emblée ses engagements (Mastodon).
+Sur la récente capitalisation de Bluesky, Joan Westenberg a un point de vue divergent de celui de Doctorow. Pointant du doigt l'arrivée massive sur Bluesky d'utilisateurices fuyant Twitter, elle pose la question suivante : Est-ce qu'une plateforme financée à coups de le grand capital (elle était évaluée à 700 millions de dollars en décembre 2024) peut réellement servir de refuge à des gens qui fuient l'arbitraire et les obessions des *Tech Bros* de Meta et X ? Le financement de Bluesky condamne ses administrateurices à la pression d'un retour sur investissement rapide, qui se traduit dans un premier temps par l'ouverture à la publicité et devrait ensuite prendre les apparences de ce que nous avons déjà observé sur Twitter (@westenbergWhatBlueskys700m2025). Ajoutons à cela que des ponts techniques (*bridges*) existent entre les protocoles de Bluesky et de Mastodon permettant aux utilisateurices de chaque plateforme de suivre celles de l'autre, ces trois raisons (décentralisation effective, organisation à but non lucratif, interopérabilité avec le protocole AT) fait qu'ARDEL n'envisage pas de créer un compte sur Bluesky et de crossposter. 
+
+### Qu'en est-il des autres alternatives : LinkedIn et Threads
+
+Threads partage avec Mastodon un même protocole, mais les règles y sont très différentes et la modération reste l'apanage d'une très petite équipe. Il s'agit d'un réseau centralisé, qui plus est au mains d'un propriétaire qui a donné des marques ostensibles d'allégeance au pouvoir nouvellement investi à Washington lequel est connu pour ses positions climato-dénialistes et antiscience. Threads expose du contenu provenant de comptes qu'on ne suit pas et il est impossible pour l'usager qu'il en soit autrement, on ne peut donc parler d'un algorithme loyal ni transparent. 
+
+LinkedIn est un réseau largement utilisé par des chercheurs et les chercheuses pour entretenir un réseau professionnel afin d'y trouver une visibilité pour de futurs employeurs et des opportunités de partenariats ou d'embauches. Ces enjeux n'ont que peu de liens avec l'objet qui occupe ARDEL, la Science Ouverte. 
+LinkedIn est également un réseau qui illustre le concept de capitalisme de plateforme tel que défini par Shoshana Zuboff. Les données personnelles qui y sont échangées (et vraisemblablement certaines autres qui sont directement prélevées auprès de ou de la nouvelle inscrite) servent à accroître la valeur monétaire du réseau.
+La position de LinkedIn vis à vis des contenus générés par des outils d'intelligence artificielle nous semble encore plus problématique. LinkedIn a annoncé récemment que loin de réguler le contenu généré par des IA, (les bots doivent être signalés comme tels sur Mastodon), le réseau facilitait le recours à ces outils en son sein (au titre d'"assistants de rédaction"). Des études récentes estiment à 54% le contenu en anglais présent sur la plateforme qui a été généré avec l'aide d'une IA, et à 23% le contenu entièrement généré par un outil d'IA (@knibbsYesThatVirala). 
+La Science Ouverte n'a rien à faire ni rien à gagner dans un univers aussi synthétique. 
+
+
+
+
+
+
+
+
 
 
 ## Présence de Mastodon dans l'enseignement supérieur français
 
-```{r}
+### Comptes gérés par des universités et instituts de recherche
+```{r requête Wikidata tous pays, include=FALSE}
 library(WikidataR)
 # enseignants-chercheurs ayant pour employés l'Université de Rennes (Q726595) ou l'Université de Rennes 1 (Q1987282)
-wikidata_df <- query_wikidata('SELECT DISTINCT ?institution ?institutionLabel ?mastodon WHERE {
+wikidata_df <- query_wikidata('SELECT DISTINCT ?institution ?institutionLabel ?Mastodon ?Bluesky ?LinkedIn ?Facebook ?Threads ?Instagram ?countryLabel WHERE {
   ?institution wdt:P31/wdt:P279* wd:Q31855 ;
-    wdt:P4033 ?mastodon .
+    wdt:P17 ?country .
+
+  {
+    ?institution wdt:P4033 ?Mastodon
+  } UNION {
+    ?institution wdt:P12361 ?Bluesky
+  } UNION {
+    ?institution wdt:P4264 ?LinkedIn
+  }  UNION {
+    ?institution wdt:P11892 ?Threads
+  } 
+ #   UNION {
+ #   ?institution wdt:P2003 ?Instagram
+ # } UNION {
+ #   ?institution wdt:P2013 ?Facebook
+ # }
+  
+ # pour ajouter Instagram et Facebook décommenter les lignes 14 à 18 ; attention, cela peut excéder le temps défini par défaut d\'une requête (time out) et la requête peut échouer
+
   SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
 }')
 write.csv(wikidata_df, "wikidata_all.csv")
@@ -104,14 +157,7 @@ write.csv(wikidata_df, "wikidata_all.csv")
 ```
 
 Une requête Wikidata permet d'obtenir la liste des institutions de recherche qui d'après les données de Wikidata se sont dotées d'un compte Mastodon. 
-
-
-
-
-
-
-
-
+Le résultat de cette requête est lisible dans le [fichier Wikidata_all.csv](wikidata_all.csv) 
 
 
 
