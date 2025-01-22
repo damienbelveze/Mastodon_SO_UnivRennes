@@ -115,9 +115,25 @@ La position de LinkedIn vis à vis des contenus générés par des outils d'inte
 La Science Ouverte n'a rien à faire ni rien à gagner dans un univers aussi synthétique. 
 
 
+# Analyse de notre activité sur Mastodon
 
+L'activité sur Mastodon peut être mesurée et interrogée au moyens d'API. Des collectifs ont commencé à distribuer des librairies pour R et pour Python qui permettent à des chercheurs et chercheuses d'extraire des contenus de la plateforme (listes d'utilisateurs, listes de statuts comportant un mot clé donné sur une instance ou plusieurs). Mais ces librairies sont également utiles pour des administrateurices d'instances afin de connaître le contenu qui transite par leur serveur en interaction avec les autres serveurs fédérés ou aux détenteurs de comptes individuels ou collectifs comme le nôtre. 
+Nous avons décidé de mener cette analyse avec un package réalisé pour R, car le mode d'authentification promu par ce package nous a semblé plus simple que celui mis en oeuvre par la [librairie Python](https://mastodonpy.readthedocs.io/en/stable/) conçue pour Mastodon. 
 
+## Le package Rtoot
 
+David Schoch et Chung-Hong Chan sont à l'origine du package Rtoot conçu pour R qu'ils ont présenté dans les colonnes de la revue *Mobile Media & Communication* (@schochSoftwarePresentationRtoot2023a). Ce paquet est téléchargeable [depuis le répertoire du CRAN](https://cran.r-project.org/web/packages/rtoot/index.html). Comme une partie des requêtes possibles par API nécessite une authentification, ce package gère cette authentification au moyen d'un token qui peut être obtenu quand on est connecté au compte à analyser. 
+
+Les commandes qui déclenchent ce processus d'authentification sont indiquées ci-dessous : 
+
+```{r eval=FALSE}
+library(rtoot)
+auth_setup()
+```
+
+Dans la console, l'application demande le nom de l'instance qui héberge le compte. Il faut fournir le nom de cette instance entre guillemets ( "mastodon.social" )
+Puis choisir "User" si on veut obtenir les chiffres relatifs à un compte d'utilisateur. 
+Si le navigateur est ouvert et que le compte est ouvert sur l'un de ses onglets, en quelques secondes une fenêtre apparaît demandant l'autorisation d'utiliser Rtoot avec le compte en question. Une fois autorisée, cette transaction aboutit à l'affichage d'un jeton (token) sous la forme d'une chaîne de caractères. Du côté de R, un popup demande ce jeton. Lorsque il lui est fourni, il est possible d'exécuter les commandes de Rtoot qui permettent d'obtenir des informations sur l'activité de ce compte. 
 
 
 
