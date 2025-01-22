@@ -1,14 +1,24 @@
 ---
 title: "Bilan d'une année d'expérience avec Mastodon"
+subtitle: "activité du compte Mastodon du service ARDEL"
 author: "Damien Belvèze" 
-output: html_document
+output: 
+  html_document:
+    toc: true
+    toc_float:
+      collapsed: true
+      smooth_scroll: false
+bibliography: biblio.bib
+csl: nature.csl
 date: "2025-01-15"
 ---
 
 
-```{r authentification avec rtoot, eval=FALSE, include=FALSE}
+```{r 1_authentification avec rtoot, eval=FALSE, include=FALSE}
 library(rtoot)
 auth_setup()
+# Si ces deux lignes de code ne sont pas exécutées en amont de la compilation (knit) de ce document, une erreur 503 est affichée. 
+# Pour exécuter ce chunck, il faut avoir son navigateur et avoir ouvert le compte SO_UnivRennes et donc pour cela disposer de l'identifiant et du mot de passe du compte
 ```
 
 ```{r extraction de données avec rtoot, include=FALSE}
@@ -31,6 +41,7 @@ boosts <- (sent - toots)
 reblogs <- sum(dataframe$reblogs_count)
 favourites <- sum(dataframe$favourites_count)
 replies <- sum(dataframe$replies_count)
+reply_to <-dataframe$in_reply_to_id
 
 followers_number <- length(followers$id)
 following_number <- length(following$id)
@@ -44,11 +55,74 @@ write_csv(followers, "followers.csv")
 #print(followers)
 #print(followers_number)
 ```
+
+
+```{r replies to users, include=FALSE}
+
+reply_to <- dataframe$in_reply_to_account_id %>%
+    .[!is.na(.) & . != "NA"]   #
+count_reply_to <- length(reply_to)
+
+```
+
+# Pourquoi nous avons choisi Mastodon
+
+## Périmètre du compte
+
+ARDEL, auquel est rattaché le [compte SO_UnivRennes](https://mastodon.social/@SO_UnivRennes) est le service d'"Appui à la Recherche et à la Documentation En Ligne (ARDEL) du Service Commun de Documentation (SCD) de l'Université de Rennes. L'activité d'ARDEL ne se limite pas à la Science Ouverte, mais elle y prend néanmoins une part importante dans les fiches de postes de 4 agents sur les 6 que compte le service, exclusive chez 2 d'entre eux. 
+
+Le compte SO_UnivRennes ne parle d'ailleurs pas uniquement de Science Ouverte mais a vocation à partager des informations sur l'ensemble des activités des membres du groupe ARDEL, dans lesquelles on trouve la documentation en ligne gérée par le SCD, les formations doctorales et la gestion des thèses en tant que production scientifique de notre Université. Pour le reste, en effet, la Science Ouverte recouvre la sensibilisation et l'accompagnement des chercheurs et chercheuses (y compris les doctorant.e.s) à la conservation, à la diffusion et au partage des publications dans et depuis HAL, des données dans et depuis Recherche Data Gouv ou d'autres entrepôts de confiance et du code source dans Software Heritage et depuis HAL.
+
+Inversement, au sein de l'Université de Rennes, la Science Ouverte est présente bien au delà de la cellule ARDEL et infuse les politiques de l'Université. Elle dispose d'un chargé de mission qui est aussi chargé de la documentation. 
+Ces éléments qui ne figurent pas encore sur la "bio" de notre compte a du être précisée dans un message de réponse à une utilisatrice, enseignante-chercheuse à l'Université de Rennes, qui sollicitait notre avis sur une contradiction apparente entre la théorie et la pratique de la Science Ouverte par notre Université.
+Le Service Commun de la Documentation a vocation à contribuer par son expertise à la construction de la politique Science Ouverte de l'Université, mais celle-ci est en dernière instance définie par le conseil scientifique. Le compte SO_UnivRennes communique sur les éléments de cette politique et aide les chercheurs et les chercheuses inscrit.e.s sur Mastodon à la mettre en oeuvre au quotidien.  
+
+## Pourquoi Mastodon
+
+Un service comme ARDEL pourrait se satisfaire de l'usage de son site web pour communiquer et de l'utilisation de flux RSS pour suivre les principales évolutions sur la Science Ouverte et la documentation électronique tant les sources d'information fiables et inspirantes sont nombreuses :  sites de revues spécialisées, sites d'institutions de recherche, de chercheurs et chercheuses, et de personnes appartenant au monde de la documentation et des bibliothèques. Devant le discrédit dans lequel X plonge une partie des autres réseaux sociaux, beaucoup d'individus actifs dans le monde du logiciel ou de la recherche quittent ces plateformes dites sociales pour passer plus de temps à lire les billets des sites qu'elles apprécient et à écrire et publier des billets sur leur propre site. 
+Pour notre part, à titre personnel, mais aussi en tant que service, nous considérons que la fréquentation d'un réseau social ajoute à une veille qui reposerait sur des flux l'apport de conversations entre points de vue parfois opposés sur les objets de notre activité ; être témoins de ces conversations, nous permet de prendre en considération dans notre pratique davantage de points de vue et d'affiner nos réponses en fonction de la situation de nos interlocuteurs et interlocutrices. Prendre part à ces conversations permet a fortiori d'éprouver des arguments au contact de collègues ou de personnels de recherche qui ont une autre expérience de terrain que la nôtre. 
+
+Nous pensons toutefois que ces enrichissements ne peuvent avoir lieu que si leur contexte est parfaitement transparent. 
+Par transparence, nous entendons tout d'abord celle de l'algorithme de distribution des message : 
+Tout d'abord, nous devons nous assurer que tout ce qui est posté par un.e utilisatreur.ice du réseau nous parvient sans filtre, à la manière d'un flux RSS qui reproduit fidèlement tout ce qui est posté par la personne qu'on suit. Ce n'était plus le cas sur Twitter déjà bien avant qu'Elon Musk ne le rachète. Mastodon n'est qu'un logiciel dont le code source est accessible. Le réseau social Fedivers dépend d'un protocole (ActivityPub) qui préexistait au logiciel Mastodon et son code est également en accès libre. 
+
+Nous souhaitons par ailleurs investir du temps dans un Commun, car nous considérons que communiquer, ce n'est pas seulement échanger des messages, mais aussi contribuer au milieu (medium) qui permettra à ces échanges d'avoir lieu. Communiquer, comme le rappelle Arthur Perret, c'est aussi bâtir du Commun (@perretFaireCommun2023a), a contrario des réseaux sociaux centralisés qui privatisent (de la donnée personnelle) et privilégient des points de vue au détriment d'autres par des algorithmes opaques et déloyaux. 
+
+
+## Présence de Mastodon dans l'enseignement supérieur français
+
+```{r}
+library(WikidataR)
+# enseignants-chercheurs ayant pour employés l'Université de Rennes (Q726595) ou l'Université de Rennes 1 (Q1987282)
+wikidata_df <- query_wikidata('SELECT DISTINCT ?institution ?institutionLabel ?mastodon WHERE {
+  ?institution wdt:P31/wdt:P279* wd:Q31855 ;
+    wdt:P4033 ?mastodon .
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
+}')
+write.csv(wikidata_df, "wikidata_all.csv")
+
+```
+
+Une requête Wikidata permet d'obtenir la liste des institutions de recherche qui d'après les données de Wikidata se sont dotées d'un compte Mastodon. 
+
+
+
+
+
+
+
+
+
+
+
+# Chiffres-clé de l'activité du compte
+
 - Le compte Mastodon SO_UnivRennes comporte **`r followers_number` followers**. 
 - Nous sommes actuellement abonnés à **`r following_number` comptes**.  
-- A travers ce compte, nous avons envoyé **`r status_number` statuts** (toots) constitués à la fois de "toots" (`r toots`)et de "boosts" (`r boosts`) 
+- A travers ce compte, nous avons envoyé **`r status_number` statuts** (toots) constitués à la fois de **`r toots` messages que nous avons rédigés** et de **`r boosts` messages envoyés par d'autres que nous avons repostés** (boosts)
 - Les toots de SO_UnivRennes ont été **`r favourites` fois mis en favoris** par des membres du réseau  
 - Ils ont reçu **`r replies` réponses** de la part d'internautes. 
+- de notre côté, nous avons envoyé **`r count_reply_to` messages de réponse** à des utilisateurs de Mastodon ou de Bluesky.
 - ils ont été boostés **`r reblogs` fois**. 
 
 
@@ -336,6 +410,22 @@ ggplot(language_pie, aes(x = "", y = count, fill = language)) +
 
 ## Annexes
 
+### Messages envoyés à des internautes
+
+Avec qui avons-nous engagé la conversation ?
+
+```{r messages envoyés en réppnse, echo=FALSE}
+usernames <- sapply(reply_to, function(id) {
+  account <- get_account(id)  # Fetch account details for each ID
+  return(account$acct)        # Extract and return the username
+})
+
+# Print the list of usernames
+print(usernames)
+
+```
+
+
 ### Timeline
 
 ```{r timeline du compte, eval=FALSE, include=FALSE}
@@ -355,6 +445,8 @@ timeline <- get_timeline_list(
 )
 ```
 
+
+# Références
 
 
 
