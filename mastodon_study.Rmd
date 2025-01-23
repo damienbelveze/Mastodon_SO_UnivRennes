@@ -4,10 +4,13 @@ subtitle: "activité du compte Mastodon du service ARDEL"
 author: "Damien Belvèze" 
 output: 
   html_document:
-    toc: true
-    toc_float:
-      collapsed: true
-      smooth_scroll: false
+      toc: true
+      toc-depth: 3
+      toc_float:
+        collapsed: true
+        smooth_scroll: false
+      theme: cosmo
+css: style.css
 bibliography: biblio.bib
 csl: nature.csl
 date: "2025-01-15"
@@ -26,7 +29,9 @@ library(readr)
 library(rtoot)
 library(tidyverse)
 library(dplyr)
+library(tufte)
 
+last_run_time <- Sys.time()
 id <- "112370075539544475"
 followers <- get_account_followers(id, limit = 300L)
 following <- get_account_following(id, limit = 300L)
@@ -79,7 +84,7 @@ Le Service Commun de la Documentation a vocation à contribuer par son expertise
 
 ## Pourquoi Mastodon
 
-Un service comme ARDEL pourrait se satisfaire de l'usage de son site web pour communiquer et de l'utilisation de flux RSS pour suivre les principales évolutions sur la Science Ouverte et la documentation électronique tant les sources d'information fiables et inspirantes sont nombreuses :  sites de revues spécialisées, sites d'institutions de recherche, de chercheurs et chercheuses, et de personnes appartenant au monde de la documentation et des bibliothèques. Devant le discrédit dans lequel X plonge une partie des autres réseaux sociaux, beaucoup d'individus actifs dans le monde du logiciel ou de la recherche quittent ces plateformes dites sociales pour passer plus de temps à lire les billets des sites qu'elles apprécient et à écrire et publier des billets sur leur propre site. 
+Un service comme ARDEL pourrait se satisfaire de l'usage de son site web pour communiquer et de l'utilisation de flux RSS pour suivre les principales évolutions sur la Science Ouverte et la documentation électronique tant les sources d'information fiables et inspirantes sont nombreuses :  sites de revues spécialisées, sites d'institutions de recherche, de chercheurs et chercheuses, et de personnes appartenant au monde de la documentation et des bibliothèques. Devant le discrédit dans lequel X plonge une partie des autres réseaux sociaux, beaucoup d'individus actifs dans le monde du logiciel ou de la recherche quittent ces plateformes dites "sociales" pour passer plus de temps à lire les billets des sites qu'elles apprécient et à écrire et publier des billets sur leur propre site[¹]. 
 
 ### Les flux RSS et les sites web ne suffisent pas
 
@@ -135,6 +140,23 @@ Dans la console, l'application demande le nom de l'instance qui héberge le comp
 Puis choisir "User" si on veut obtenir les chiffres relatifs à un compte d'utilisateur. 
 Si le navigateur est ouvert et que le compte est ouvert sur l'un de ses onglets, en quelques secondes une fenêtre apparaît demandant l'autorisation d'utiliser Rtoot avec le compte en question. Une fois autorisée, cette transaction aboutit à l'affichage d'un jeton (token) sous la forme d'une chaîne de caractères. Du côté de R, un popup demande ce jeton. Lorsque il lui est fourni, il est possible d'exécuter les commandes de Rtoot qui permettent d'obtenir des informations sur l'activité de ce compte. 
 
+Le code source de cette publication fournit les requêtes utilisées pour recueillir les données qui ont permis d'extraire les chiffres qui sont présentés dans ce document. 
+Pour utiliser ce code avec un autre compte que celui de SO_UnivRennes, il faut utiliser rtoot pour récupérer l'identifiant numérique du compte (celui de SO_UnivRennes est "112370075539544475") et remplacer notre identifiant par le votre dans la ligne suivante : 
+
+```{r eval=FALSE}
+id <- "votre numéro"
+```
+
+Pour trouver cet identifiant, on utilise la fonction search_account du package rtoot : 
+
+```{r eval=FALSE}
+id <- search_accounts("SO_UnivRennes")
+print(id)
+# donne 112370075539544475
+```
+
+Dans le présent document, les chiffres en bleu et en gras comportent les chiffres obtenus lorsqu'on a exécuté pour la dernière fois la commande auth_setup (=lorsqu'on a compilé le présent document pour la dernière fois), c'est à dire à cette date : <div class="blue"`r last_run_time`</div>.
+
 
 
 
@@ -142,8 +164,16 @@ Si le navigateur est ouvert et que le compte est ouvert sur l'un de ses onglets,
 ## Présence de Mastodon dans l'enseignement supérieur français
 
 ### Comptes gérés par des universités et instituts de recherche
-```{r requête Wikidata tous pays, include=FALSE}
+
+Une requête Wikidata permet d'obtenir la liste des institutions de recherche qui d'après les données de Wikidata se sont dotées d'un compte Mastodon. 
+Le résultat de cette requête est lisible dans le [fichier Wikidata_all.csv](wikidata_all.csv) 
+
+Quels types de comptes "alternatifs" à X/Twitter, Facebook ou Instagram (Meta) les institutions de recherche ouvrent-ils ?  
+
+```{r requête Wikidata tous pays, echo=FALSE}
 library(WikidataR)
+library(dplyr)
+library(ggplot2)
 # enseignants-chercheurs ayant pour employés l'Université de Rennes (Q726595) ou l'Université de Rennes 1 (Q1987282)
 wikidata_df <- query_wikidata('SELECT DISTINCT ?institution ?institutionLabel ?Mastodon ?Bluesky ?LinkedIn ?Facebook ?Threads ?Instagram ?countryLabel WHERE {
   ?institution wdt:P31/wdt:P279* wd:Q31855 ;
@@ -170,22 +200,56 @@ wikidata_df <- query_wikidata('SELECT DISTINCT ?institution ?institutionLabel ?M
 }')
 write.csv(wikidata_df, "wikidata_all.csv")
 
+wikidata_df_masto <- wikidata_df %>% filter(!is.na(Mastodon))
+wikidata_df_blue <- wikidata_df %>% filter( !is.na(Bluesky))
+wikidata_df_link <- wikidata_df %>% filter(is.na(LinkedIn))
+wikidata_df_threads <- wikidata_df %>% filter(!is.na(Threads))
+count_mastodon <- length(wikidata_df_masto$Mastodon)
+count_bluesky <- length(wikidata_df_blue$Bluesky)
+count_linkedin <- length(wikidata_df_link$LinkedIn)
+count_threads <- length(wikidata_df_threads$Threads)
+
+count_networks <- c(count_mastodon, count_bluesky, count_linkedin, count_threads)
+networks <- c("Mastodon", "Bluesky", "LinkedIn", "Threads")
+
+df_networks <- data.frame(networks, count_networks)
+
+
+# Barplot basique
+p<-ggplot(data=df_networks, aes(x=networks, y=count_networks)) +
+  geom_bar(stat="identity")
+p + coord_flip()
+
 ```
 
-Une requête Wikidata permet d'obtenir la liste des institutions de recherche qui d'après les données de Wikidata se sont dotées d'un compte Mastodon. 
-Le résultat de cette requête est lisible dans le [fichier Wikidata_all.csv](wikidata_all.csv) 
 
+Dans quels pays trouve t-on le plus de comptes Mastodon rattachés à des institutions de recherche ?
+
+```{r mastodon par pays, echo=FALSE}
+wikidata_df_langues <- wikidata_df %>% filter(!is.na(countryLabel))
+mastodon_countries <- wikidata_df_langues$countryLabel
+count_table <- table(mastodon_countries)
+top10 <- sort(count_table, decreasing = TRUE)[1:10]
+top10_df <- as.data.frame(top10)
+colnames(top10_df) <- c("Pays", "Nombre")
+ggplot(top10_df, aes(x = reorder(Pays, -Nombre), y = Nombre)) +
+  geom_bar(stat = "identity", fill = "skyblue") +
+  labs(title = "Nombres de comptes Mastodon ouverts par les institutions de recherche par pays (10 pays ayant les plus hautes valeurs)", x = "Pays", y = "Nombre de comptes") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+```
 
 
 # Chiffres-clé de l'activité du compte
 
-- Le compte Mastodon SO_UnivRennes comporte **`r followers_number` followers**. 
-- Nous sommes actuellement abonnés à **`r following_number` comptes**.  
-- A travers ce compte, nous avons envoyé **`r status_number` statuts** (toots) constitués à la fois de **`r toots` messages que nous avons rédigés** et de **`r boosts` messages envoyés par d'autres que nous avons repostés** (boosts)
-- Les toots de SO_UnivRennes ont été **`r favourites` fois mis en favoris** par des membres du réseau  
-- Ils ont reçu **`r replies` réponses** de la part d'internautes. 
-- de notre côté, nous avons envoyé **`r count_reply_to` messages de réponse** à des utilisateurs de Mastodon ou de Bluesky.
-- ils ont été boostés **`r reblogs` fois**. 
+- Le compte Mastodon SO_UnivRennes comporte <div class="blue">`r followers_number` followers</div>. 
+- Nous sommes actuellement abonnés à <div class="blue">`r following_number` comptes</div>.  
+- A travers ce compte, nous avons envoyé <div class="blue">`r status_number` statuts</div> (toots) constitués à la fois de <div class="blue">`r toots` messages que nous avons rédigés</div> et de <div class="blue">`r boosts` messages envoyés par d'autres que nous avons repostés</div> (boosts)
+- Les toots de SO_UnivRennes ont été <div class="blue">`r favourites` fois mis en favoris</div> par des membres du réseau  
+- Ils ont reçu <div class="blue">`r replies` réponses de la part d'internautes</div>. 
+- de notre côté, nous avons envoyé <div class="blue">`r count_reply_to` messages de réponse</div> à des utilisateurs de Mastodon ou de Bluesky.
+- ils ont été boostés <div class="blue">`r reblogs` fois</div>. 
 
 
 
@@ -511,4 +575,4 @@ timeline <- get_timeline_list(
 # Références
 
 
-
+[¹]: voir par exemple l'édito de Korben (https://korben.info/sacs-a-merde.html)
