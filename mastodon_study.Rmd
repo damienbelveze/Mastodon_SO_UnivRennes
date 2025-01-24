@@ -165,19 +165,24 @@ Dans le présent document, les chiffres en bleu et en gras comportent les chiffr
 
 ### Comptes gérés par des universités et instituts de recherche
 
-Une requête Wikidata permet d'obtenir la liste des institutions de recherche qui d'après les données de Wikidata se sont dotées d'un compte Mastodon. 
+Une requête Wikidata permet d'obtenir la liste des institutions de recherche qui d'après les données de Wikidata se sont dotées d'un compte Mastodon.
+Cette requête peut se faire depuis R au moyen du [package wikidataR](https://cran.r-project.org/web/packages/WikidataR/WikidataR.pdf). 
 Le résultat de cette requête est lisible dans le [fichier Wikidata_all.csv](wikidata_all.csv) 
 
 Quels types de comptes "alternatifs" à X/Twitter, Facebook ou Instagram (Meta) les institutions de recherche ouvrent-ils ?  
+Nous faisons entrer ici comme *alternatifs* des réseaux que nous en considérons pas comme de réelles alternatives (puisque pour nous seuls les services actuellement présents sur le Fédivers méritent vraiment ce nom). Nous mentionnons ici les services vers lesquels se tournent usagers et institutions lorsqu'ils désirent quitter X ou Facebook. 
+La littérature scientifique sur le sujet mentionne essentiellement Mastodon, Bluesky, Threads et LinkedIn comme réseaux de destination et c'est une sélection que nous reprenons à notre compte. 
 
 ```{r requête Wikidata tous pays, echo=FALSE}
 library(WikidataR)
 library(dplyr)
 library(ggplot2)
-# enseignants-chercheurs ayant pour employés l'Université de Rennes (Q726595) ou l'Université de Rennes 1 (Q1987282)
 wikidata_df <- query_wikidata('SELECT DISTINCT ?institution ?institutionLabel ?Mastodon ?Bluesky ?LinkedIn ?Facebook ?Threads ?Instagram ?countryLabel WHERE {
-  ?institution wdt:P31/wdt:P279* wd:Q31855 ;
+  ?institution wdt:P31/wdt:P279* wd:Q31855;
     wdt:P17 ?country .
+
+# Institutions de recherche : wd:Q31855
+# bibliothèques : wd:Q7075
 
   {
     ?institution wdt:P4033 ?Mastodon
@@ -213,35 +218,124 @@ count_networks <- c(count_mastodon, count_bluesky, count_linkedin, count_threads
 networks <- c("Mastodon", "Bluesky", "LinkedIn", "Threads")
 
 df_networks <- data.frame(networks, count_networks)
+```
+
+```{r include=FALSE}
+
+wikidata_df_libraries <- query_wikidata('SELECT DISTINCT ?institution ?institutionLabel ?Mastodon ?Bluesky ?LinkedIn ?Facebook ?Threads ?Instagram ?countryLabel WHERE {
+  ?institution wdt:P31/wdt:P279* wd:Q7075;
+    wdt:P17 ?country .
+
+# Institutions de recherche : wd:Q31855
+# bibliothèques : wd:Q7075
+
+  {
+    ?institution wdt:P4033 ?Mastodon
+  } UNION {
+    ?institution wdt:P12361 ?Bluesky
+  } UNION {
+    ?institution wdt:P4264 ?LinkedIn
+  }  UNION {
+    ?institution wdt:P11892 ?Threads
+  } 
+ #   UNION {
+ #   ?institution wdt:P2003 ?Instagram
+ # } UNION {
+ #   ?institution wdt:P2013 ?Facebook
+ # }
+  
+ # pour ajouter Instagram et Facebook décommenter les lignes 14 à 18 ; attention, cela peut excéder le temps défini par défaut d\'une requête (time out) et la requête peut échouer
+
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
+}')
+write.csv(wikidata_df_libraries, "wikidata_libraries.csv")
+
+wikidata_df_libraries_masto <- wikidata_df_libraries %>% filter(!is.na(Mastodon))
+wikidata_df_libraries_blue <- wikidata_df_libraries %>% filter( !is.na(Bluesky))
+wikidata_df_libraries_link <- wikidata_df_libraries %>% filter(is.na(LinkedIn))
+wikidata_df_libraries_threads <- wikidata_df_libraries %>% filter(!is.na(Threads))
+count_mastodon_libraries <- length(wikidata_df_libraries_masto$Mastodon)
+count_bluesky_libraries <- length(wikidata_df_libraries_blue$Bluesky)
+count_linkedin_libraries <- length(wikidata_df_libraries_link$LinkedIn)
+count_threads_libraries <- length(wikidata_df_libraries_threads$Threads)
+
+count_networks_libraries <- c(count_mastodon_libraries, count_bluesky_libraries, count_linkedin_libraries, count_threads_libraries)
+networks_libraries <- c("Mastodon_libraries", "Bluesky_libraries", "LinkedIn_libraries", "Threads_libraries")
+
+df_networks_libraries <- data.frame(networks_libraries, count_networks_libraries)
 
 
-# Barplot basique
-p<-ggplot(data=df_networks, aes(x=networks, y=count_networks)) +
-  geom_bar(stat="identity")
-p + coord_flip()
+
+
 
 ```
 
+```{r réseaux, fig.show="hold", echo=FALSE, out.width="50%"}
+library(ggplot2)
+# Barplot basique
+p <- ggplot(data=df_networks, aes(x=networks, y=count_networks)) +
+  geom_bar(stat="identity", fill="#f45b56")
+p + coord_flip() + labs(x="nombre de comptes ouverts",y="réseau",
+               title="Institutions de recherche dans Wikidata")
+
+p_libraries <- ggplot(data=df_networks_libraries, aes(x=networks_libraries, y=count_networks_libraries)) +
+  geom_bar(stat="identity", fill="#15af29")
+p_libraries + coord_flip() + labs(x="nombre de comptes ouverts",y="réseau",
+               title="Bibliothèques dans Wikidata")
+
+```
+Selon les données prélevées au 24 janvier 2025, il semble que proportionnellement les bibliothèques aient un peu plus investi dans Mastodon et un peu moins dans Bluesky que les institutions de recherche (même si nombre d'entre elles sont présentes sur les deux réseaux). L'investissement dans Threads est également un peu moins fort du côté des bibliothèques, ce qui peut peut-être s'expliquer par une sensibilité plus grande à l'égard de réseaux décentralisés ou transparents. Ce n'est qu'une hypothèse bien sûr qu'il faudra vérifier avec le temps ou bien avec des données plus représentatives que celles qui sont sur Wikidata.  
 
 Dans quels pays trouve t-on le plus de comptes Mastodon rattachés à des institutions de recherche ?
 
-```{r mastodon par pays, echo=FALSE}
+```{r mastodon par pays institutions et bibliothèques, include=FALSE}
+library(dplyr)
 wikidata_df_langues <- wikidata_df %>% filter(!is.na(countryLabel))
 mastodon_countries <- wikidata_df_langues$countryLabel
 count_table <- table(mastodon_countries)
 top10 <- sort(count_table, decreasing = TRUE)[1:10]
 top10_df <- as.data.frame(top10)
 colnames(top10_df) <- c("Pays", "Nombre")
-ggplot(top10_df, aes(x = reorder(Pays, -Nombre), y = Nombre)) +
-  geom_bar(stat = "identity", fill = "skyblue") +
-  labs(title = "Nombres de comptes Mastodon ouverts par les institutions de recherche par pays (10 pays ayant les plus hautes valeurs)", x = "Pays", y = "Nombre de comptes") +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+wikidata_df_langues_libraries <- wikidata_df_libraries %>% filter(!is.na(countryLabel))
+mastodon_countries_libraries <- wikidata_df_langues_libraries$countryLabel
+count_table_libraries <- table(mastodon_countries_libraries)
+top10_libraries <- sort(count_table_libraries, decreasing = TRUE)[1:10]
+top10_df_libraries <- as.data.frame(top10_libraries)
+colnames(top10_df_libraries) <- c("Pays_libraries", "Nombre_libraries")
 
 ```
 
 
-# Chiffres-clé de l'activité du compte
+```{r pays adopteurs de Mastodon, echo=FALSE, fig.show="hold", out.width="50%" }
+
+library(ggplot2)
+q <- ggplot(top10_df, aes(x = reorder(Pays, -Nombre), y = Nombre)) +
+  geom_bar(stat = "identity", fill = "#f45b56") +
+  labs(title = "Institutions de recherche sur Mastodon (10 premiers pays)", x = "Pays", y = "Nombre de comptes") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
+
+q + coord_flip()
+
+q_libraries <- ggplot(top10_df_libraries, aes(x = reorder(Pays_libraries, -Nombre_libraries), y = Nombre_libraries)) +
+  geom_bar(stat = "identity", fill = "#15af29") +
+  labs(title = "bibliothèque sur Mastodon (10 premiers pays)", x = "Pays", y = "Nombre de comptes") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
+
+q_libraries + coord_flip()
+
+```
+Au 24 janvier 2025, l'Allemagne est le pays dont à la fois les institutions de recherche et les bibliothèques ont le plus investi Mastodon. Le nombre de comptés rattachés à l'Allemagne dans Wikidata est supérieur à celui des Etats-Unis. La principale différence entre institutions de recherche et bibliothèques concerne le placement des Pays-Bas. Tandis que ce pays n'occupe que la 9ème place dans le classement pour les Institutions de recherche, il obtient la troisième place (deuxième pour l'Europe devant la France) en ce qui concerne l'implantation de Mastodon dans les politiques de communication des bibliothèques. 
+
+Il faudrait une recherche plus approfondie pour expliquer pourquoi Mastodon est mieux implanté dans les bibliothèques allemandes et néerlandaises que dans les bibliothèques françaises (et davantage utilisé par les institutions de recherche allemandes que par leurs équivalents français). L'histoire administrative de l'Allemagne et de la France (décentralisation vs centralisation) joue t-elle un rôle ? Le public français, notamment scientifique, est-il plus simple à cette réputation de difficulté de Mastodon que nous contestons dans les faits ? La pression sociale pour aller d'une plateforme centralisée comme X à cette autre plateforme centralisée qu'est Bluesky est-elle plus grande ici que chez nos voisins d'Outre-Rhin ?
+
+
+# Chiffres sur l'activité de notre compte
+
+
+Ces chiffres seront mis à jour régulièrement en activant la procédure d'authentification qui rend possible l'activation du script sous-jacent à cette publication. 
 
 - Le compte Mastodon SO_UnivRennes comporte <div class="blue">`r followers_number` followers</div>. 
 - Nous sommes actuellement abonnés à <div class="blue">`r following_number` comptes</div>.  
@@ -252,21 +346,18 @@ ggplot(top10_df, aes(x = reorder(Pays, -Nombre), y = Nombre)) +
 - ils ont été boostés <div class="blue">`r reblogs` fois</div>. 
 
 
+# qui sont nos followers
 
-# followers
-
-Qui sont nos followers et qu'est-ce qui les intéresse ? 
-
-## présence dans des listes
-
-
-
-
-## Liste des followers
-
+Par "Followers", on entend tous les détenteurs et détentrices de comptes qui peuvent nous suivre d'une autre instance de Mastodon, de la même instance, de Bluesky ou bien d'un autre service interopérable avec Mastodon via le protocole ActivityPub comme Peertube ou Pixelfeld. 
 
 ## mots-clé liés aux followers
 
+Les utilisateurs et utilisatrices de Mastodon mettent courarmment en avant des hashtags qui caractérisent leurs intérêts et facilitent ainsi leur signalement auprès de la communauté. Cette fonction s'appelle "features hashtags" et est disponible dans l'édition du profil.
+Notre compte SO_UnivRennes arbore par exemple les hashtags suivants : 
+
+![](hashtags.png)
+
+Voici la liste des hashtags arborés par nos followers :
 
 ```{r echo=FALSE}
 library(dplyr)
@@ -285,10 +376,8 @@ tag_list <- followers$tag %>%
 cat(tag_list)
 write.csv(tag_list,"tag_list.csv")
 write.csv(followers,"followers.csv")
-
-
-
 ```
+
 
 ## Instances des followers
 
@@ -311,8 +400,15 @@ instance_count_dataframe <- instance_count_dataframe %>%
 head_instance_count_dataframe <- head(instance_count_dataframe, n=12)
 print(head_instance_count_dataframe)
 
+bsky <- instance_count_dataframe$nombre[which(instance_count_dataframe$instance == "bsky.brid.gy/r/https")]
+
 ```
 
+La provenance des followers est sans doute peu représentative de l'importance des instances dans les choix des communités scientifiques françaises. Ces instances sont d'ailleurs peu comparables entre elles. Social.numerique.gouv.fr n'est ouvert qu'à des institutions 100% publiques et ne comptait que 27 comptes actifs au 24 janvier 2025. 
+Framapiaf, l'instance mise en place par l'association Framasoft a connu un vif succès à ces débuts mais a déliberemment clos sa plateforme aux inscriptions après avoir dépassé les 9000 abonnés. L'idée d'une croissance infinie est fort éloignée des préoccupations des administrateurs et administratrices de Mastodon qui doivent pouvoir équilibrer la taille d'une communauté avec le type de service et de modération qu'ils ou elles peuvent rendre. 
+Parmi nos followers, l'instance social.sciences.re (940 comptes) est sur-représentée par rapport à celle de Piaille qui en compte 12000, Mais Piaille bien qu'administrée par des personnes gravitant dans le monde de la Science, comme Célian Godefroid, [juriste rattaché aux BU de Paris-Saclay](https://mastodon.social/@CelianGodefroid@piaille.fr) n'est pas une instance scientifique à proprement parler (contrairement à Fediscience et ses 1100 abonnés préoccupés de Recherche) 
+
+Comme nous avons immédiatement activé un pont avec Bluesky, notre compte peut être suivi depuis ce réseau avec l'alias [@SO-UnivRennes.mastodon.social.ap.brid.gy](https://bsky.app/profile/SO-UnivRennes.mastodon.social.ap.brid.gy), ce qui permet à <div class="blue">`r bsky`</div> utilisateurs ou utilisatrices de cette plateforme de rester en contact avec nous (à l'exception des messages privés que les ponts ne peuvent pas gérer. Les interactions publiques elles sont bien transmises) @turnerBridgyFedLinking2024.
 
 
 ```{r traitement de la colonne content, include=FALSE}
@@ -335,8 +431,9 @@ write_csv(dataframe, "SO_univrennes_toots_content.csv")# Now dataframe2$content 
 ```
 
 
-## acitvité des followers
+## activité des followers
 
+Nos actualités sont boostées par plusieurs de nos followers. Bien entendu l'écho qui en est fait, dépend du nombre de personnes qui suivent ces followers. Nous avons donc souhaité savoir qui étaient (en nombre de followers) nos abonné.e.s les plus influent.e.s. Voici la liste des 10 abonnés qui ont le plus grand score d'abonnés :
 
 ```{r audience des followers, include=FALSE}
 
@@ -397,7 +494,6 @@ if (!is.null(followers_list) && "id" %in% names(followers_list)) {
 
 ```
 
-Liste des 10 followers les plus influents (ayant le plus de followers)
 
 ```{r ordonnancement activité followers, echo=FALSE}
 result2 <-read.csv("followers_count.csv")
@@ -409,8 +505,11 @@ print(head_result2)
 
 # Caractéristiques des toots envoyés par SO_UnivRennes
 
+Dans cette partie, nous nous intéressons aux messages que envoyons sur Mastodon depuis notre compte SO_UnivRennes : sont-ils plutôt longs, courts ? La limite en nombre de caractères d'un message est fixée sur Mastodon par les propriétaires de chaque instance. 
+
 ## longueur moyenne des toots
 
+Le code emprunté pour générer ce graphique provient de la présentation des développeurs de Rtoot que nous avons déjà citée (@schochSoftwarePresentationRtoot2023a)
 
 ```{r distribution longueur toots, echo=FALSE}
 library(tidyverse)
@@ -430,18 +529,12 @@ dataframe <- get_account_statuses(id, limit = 300L)
 tree <- dataframe %>% mutate(interface = map_chr(application, extract_application), length = nchar(content)) %>% filter(!is.na(interface)) %>% ggplot(aes(x = interface, y = length)) + geom_dotplot(binaxis = "y", stackdir = "center", dotsize = 0.5)
 
 png("tree.png")
-print(tree)
 dev.off()
 ```
 
 
-
-
-
-
-
-
 ![](tree.png)
+L'instance qui héberge notre compte Mastodon.social a une limite de 500 caractères par message. Les toots de SO_UnivRennes ont en moyenne une longueur de **292 caractères**
 
 ```{r eval=FALSE, include=FALSE}
 dataframe %>%
@@ -460,9 +553,12 @@ toot_length <- dataframe%>%summarise(mean(length(application)))
 print(toot_length)
 ```
 
-Les toots de SO_UnivRennes ont en moyenne une longueur de **292 caractères**
 
 # Liste des hashtags utilisés 
+
+L'occurrence des hashtags que nous utilisons est significative du type de messages que nous postons. 
+Rtoots récupère l'ensemble des toots (statuts) envoyés en format html. 
+L'analyse de ce contenu passe donc par une phase de nettoyage où les balises html doivent être supprimées du contenu. Cela se fait au moyen des packages *rvest* et *purr*, [selon la méthode présentée par Stochastics](https://schochastics.github.io/rtoot2022/#/parsing-content-1) (@stochasticsInteractingMastodonAPI). 
 
 ```{r liste hashtags, echo=FALSE}
 library(stringr)
@@ -540,7 +636,7 @@ ggplot(language_pie, aes(x = "", y = count, fill = language)) +
 
 Avec qui avons-nous engagé la conversation ?
 
-```{r messages envoyés en réppnse, echo=FALSE}
+```{r messages envoyés en réponse, echo=FALSE}
 usernames <- sapply(reply_to, function(id) {
   account <- get_account(id)  # Fetch account details for each ID
   return(account$acct)        # Extract and return the username
@@ -552,24 +648,6 @@ print(usernames)
 ```
 
 
-### Timeline
-
-```{r timeline du compte, eval=FALSE, include=FALSE}
-library(rtoot)
-# voir https://gesistsa.github.io/rtoot/reference/get_timeline_home.html
-list_id <- c(id)
-timeline <- get_timeline_list(
-  list_id,
-  #max_id,
-  #since_id,
-  #min_id,
-  limit = 200L,
-  token = "mettre le token ici",
-  parse = TRUE,
-  retryonratelimit = TRUE,
-  verbose = TRUE
-)
-```
 
 
 # Références
