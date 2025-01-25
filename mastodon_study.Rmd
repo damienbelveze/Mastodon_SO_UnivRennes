@@ -380,9 +380,12 @@ Au 24 janvier 2025, l'Allemagne est le pays dont à la fois les institutions de 
 Il faudrait une recherche plus approfondie pour expliquer pourquoi Mastodon est mieux implanté dans les bibliothèques allemandes et néerlandaises que dans les bibliothèques françaises (et davantage utilisé par les institutions de recherche allemandes que par leurs équivalents français). L'histoire administrative de l'Allemagne et de la France (décentralisation vs centralisation) joue t-elle un rôle ? La nationalité du concepteur de l'application, Eugen Rochko joue t-elle un rôle dans ce niveau d'adoption ? Le public français, notamment scientifique, est-il plus simple à cette réputation de difficulté de Mastodon que nous contestons dans les faits ? La pression sociale pour aller d'une plateforme centralisée comme X à cette autre plateforme centralisée qu'est Bluesky est-elle plus grande ici que chez nos voisins d'Outre-Rhin ?
 Il faut observer que le régime politique allemand est directement ciblé par la propagande politique du propriétaire de X [⁴], ce qui a conduit des collectivités locales à quitter plus rapidement X qu'en France. Les services du Délégué à la Protection des Données du Bad-Würtemberg [héberge une instance](https://bawü.social/explore) qui sert de référence aux administrations. 
 
+En France, on reproche souvent à Mastodon d'encourager un "entre-soi", alors même que les algorithmes de X et de Meta poussent la bulle de filtre à des niveaux jamais atteints, qui permettent de se façonner un monde fidèle à l'image qu'on veut en avoir. Cette image défavorable tient sans doute au fait que le choix d'une instance implique un tiers de confiance, des affinités préalablement établies avant l'arrivée sur Mastodon. Par exemple, si on apprécie les travaux de la Quadrature du Net, on aura tendance à se faire héberger sur mamot.fr, l'instance mise en place par cette association. Pour autant, un internaute depuis son instance voit très majoritairement passer des messages provenant d'autres instances. 
+Par ailleurs, beaucoup de personnes qui se retrouvent dans Mastodon avaient au préalable tenté leur chance sur Twitter et en sont partie dégoûtées, souvent bien avant le mouvement HelloquitteX. Les valeurs que ces personnes affichent sont de manière assez logique aux antipodes de celles de X. Plus les utilisateurs de X vantent les Tesla, les cryptomonnaies, l'énergie masculine chère à Marc Zuckerberg, et conspuent le wokisme et plus les valeurs écologiques dont le vélotaf, la régulation des flux financiers et les valeurs progressistes dont le féminisme et le respect des personnes LGBTQI+ s'affichent dans les statuts et les chartes de modération. 
 
+Quant aux compétences techniques que les utilisateurices de Mastodon sont censées avoir en abondance, on devrait parler plus simplement d'une culture numérique, ou d'une forme de compréhension du numérique qui permet en effet de résister à la pression sociale qui fait transiter les utiliateurices d'une plateforme centralisée à une autre. 
 
-# Chiffres sur l'activité de notre compte
+## 2.3 Chiffres sur l'activité de notre compte
 
 Ces chiffres seront mis à jour régulièrement en activant la procédure d'authentification qui rend possible l'activation du script sous-jacent à cette publication. 
 
@@ -395,16 +398,16 @@ Ces chiffres seront mis à jour régulièrement en activant la procédure d'auth
 - ils ont été boostés <div class="blue">`r reblogs` fois</div>. 
 
 
-## qui sont nos followers
+## 2.4 qui sont nos followers
 
 Par "Followers", on entend tous les détenteurs et détentrices de comptes qui peuvent nous suivre d'une autre instance de Mastodon, de la même instance, de Bluesky ou bien d'un autre service interopérable avec Mastodon via le protocole ActivityPub comme Peertube ou Pixelfeld. 
 
-## mots-clé liés aux followers
+### 2.4.1 mots-clé liés aux followers
 
 Les utilisateurs et utilisatrices de Mastodon mettent courarmment en avant des hashtags qui caractérisent leurs intérêts et facilitent ainsi leur signalement auprès de la communauté. Cette fonction s'appelle "features hashtags" et est disponible dans l'édition du profil.
 Notre compte SO_UnivRennes arbore par exemple les hashtags suivants : 
 
-![](hashtags.png)
+<img src="images/hashtags.png" alt="liste des hashtags mis en évidence sur le profil du compte SO_UnivRennes" />
 
 Voici la liste des hashtags arborés par nos followers :
 
@@ -428,7 +431,7 @@ write.csv(followers,"followers.csv")
 ```
 
 
-## Instances des followers
+## 2.4.2 Instances des followers
 
 ```{r instance des followers, echo=FALSE}
 # extracting instances from accounts can also be performed within rtoot : https://schochastics.github.io/rtoot2022/#/interlude-extract-instances-from-statuses-1
@@ -453,8 +456,7 @@ bsky <- instance_count_dataframe$nombre[which(instance_count_dataframe$instance 
 
 ```
 
-La provenance des followers est sans doute peu représentative de l'importance des instances dans les choix des communités scientifiques françaises. Ces instances sont d'ailleurs peu comparables entre elles. Social.numerique.gouv.fr n'est ouvert qu'à des institutions 100% publiques et ne comptait que 27 comptes actifs au 24 janvier 2025. 
-Framapiaf, l'instance mise en place par l'association Framasoft a connu un vif succès à ces débuts mais a déliberemment clos sa plateforme aux inscriptions après avoir dépassé les 9000 abonnés. L'idée d'une croissance infinie est fort éloignée des préoccupations des administrateurs et administratrices de Mastodon qui doivent pouvoir équilibrer la taille d'une communauté avec le type de service et de modération qu'ils ou elles peuvent rendre. 
+La provenance des followers est sans doute peu représentative de l'importance des instances dans les choix des communités scientifiques françaises. Ces instances sont d'ailleurs peu comparables entre elles, par leur taille et les communautés qu'elles visent à constituer. Social.numerique.gouv.fr n'est ouvert qu'à des institutions 100% publiques et ne comptait que 27 comptes actifs au 24 janvier 2025. Universite.social est destinée aux utilisateurices qui disposent d'un identifiant universitaire. Mastodon.social est ouvert à toutes et tous depuis 2017. Framapiaf, l'instance mise en place par l'association Framasoft a connu un vif succès à ces débuts mais a dédicé ensuiite de clore sa plateforme aux nouvelles inscriptions après avoir dépassé les 9000 abonnés. L'idée d'une croissance infinie est fort éloignée des préoccupations des administrateurs et administratrices de Mastodon qui doivent pouvoir équilibrer la taille d'une communauté avec le type de service et de modération qu'ils ou elles peuvent rendre. 
 Parmi nos followers, l'instance social.sciences.re (940 comptes) est sur-représentée par rapport à celle de Piaille qui en compte 12000, Mais Piaille bien qu'administrée par des personnes gravitant dans le monde de la Science, comme Célian Godefroid, [juriste rattaché aux BU de Paris-Saclay](https://mastodon.social/@CelianGodefroid@piaille.fr) n'est pas une instance scientifique à proprement parler (contrairement à Fediscience et ses 1100 abonnés préoccupés de Recherche) 
 
 Comme nous avons immédiatement activé un pont avec Bluesky, notre compte peut être suivi depuis ce réseau avec l'alias [SO-UnivRennes.mastodon.social.ap.brid.gy](https://bsky.app/profile/SO-UnivRennes.mastodon.social.ap.brid.gy), ce qui permet à <div class="blue">`r bsky`</div> utilisateurs ou utilisatrices de cette plateforme de rester en contact avec nous (à l'exception des messages privés que les ponts ne peuvent pas gérer. Les interactions publiques elles sont bien transmises) @turnerBridgyFedLinking2024. 
@@ -480,7 +482,7 @@ write_csv(dataframe, "SO_univrennes_toots_content.csv")# Now dataframe2$content 
 ```
 
 
-## activité des followers
+## 2.4.3 activité des followers
 
 Nos actualités sont boostées par plusieurs de nos followers. Bien entendu l'écho qui en est fait, dépend du nombre de personnes qui suivent ces followers. Nous avons donc souhaité savoir qui étaient (en nombre de followers) nos abonné.e.s les plus influent.e.s. Voici la liste des 10 abonnés qui ont le plus grand score d'abonnés :
 
@@ -552,11 +554,11 @@ print(head_result2)
 
 ```
 
-# Caractéristiques des toots envoyés par SO_UnivRennes
+## 2.5 Caractéristiques des toots envoyés par SO_UnivRennes
 
 Dans cette partie, nous nous intéressons aux messages que envoyons sur Mastodon depuis notre compte SO_UnivRennes : sont-ils plutôt longs, courts ? La limite en nombre de caractères d'un message est fixée sur Mastodon par les propriétaires de chaque instance. 
 
-## longueur moyenne des toots
+### 2.5.1 longueur moyenne des toots
 
 Le code emprunté pour générer ce graphique provient de la présentation des développeurs de Rtoot que nous avons déjà citée (@schochSoftwarePresentationRtoot2023a)
 
@@ -577,12 +579,12 @@ library(ggplot2)
 dataframe <- get_account_statuses(id, limit = 300L) 
 tree <- dataframe %>% mutate(interface = map_chr(application, extract_application), length = nchar(content)) %>% filter(!is.na(interface)) %>% ggplot(aes(x = interface, y = length)) + geom_dotplot(binaxis = "y", stackdir = "center", dotsize = 0.5)
 
-png("tree.png")
+png("images/tree.png")
 dev.off()
 ```
 
 
-![](tree.png)
+![](images/tree.png)
 L'instance qui héberge notre compte Mastodon.social a une limite de 500 caractères par message. Les toots de SO_UnivRennes ont en moyenne une longueur de **292 caractères**
 
 ```{r eval=FALSE, include=FALSE}
@@ -603,7 +605,7 @@ print(toot_length)
 ```
 
 
-# Liste des hashtags utilisés 
+### 2.5.2 Liste des hashtags utilisés 
 
 L'occurrence des hashtags que nous utilisons est significative du type de messages que nous postons. 
 Rtoots récupère l'ensemble des toots (statuts) envoyés en format html. 
@@ -636,7 +638,7 @@ head_hashtag_count <- head(hashtag_count_dataframe, n=10)
 print(head_hashtag_count)
 ```
 
-# langue utilisée pour les toots de SO_UnivRennes
+### 2.5.3 langue utilisée pour les toots de SO_UnivRennes
 
 Les développements de la science ouverte prennent parfois des chemins différents selon les pays ; il est important de pouvoir interagir avec des comptes d'autres pays, d'où l'envoi régulier de messages en anglais. 
 le package R *textcat* permet d'identifier la langue des toots et d'obtenir des chiffres sur cet usage de l'anglais, qui reste, comme on le voit plus bas assez minoritaire en ce qui nous concerne :
@@ -681,15 +683,16 @@ ggplot(language_pie, aes(x = "", y = count, fill = language)) +
   theme(legend.title = element_blank())
 ```
 
-## Annexes
 
-### Messages envoyés à des internautes
+### 2.5.4 Messages envoyés à des internautes
 
 Bien entendu, notre compte sert à communiquer sur nos événements, ateliers, nouveautés concernant HAL et la politique Science Ouverte de notre établissement, ce qui est en soi déjà très important. Mais notre ambition est également de nourrir des interactions riches avec les utilisateurices du réseau : échanger des informations, des points de vue, discuter dans un climat serein, ce que X rendait impossible. 
 Avec qui avons-nous engagé la conversation ?
 Voici quelques personnes à qui nous avons répondu dernièrement sur le réseau :
 
 ```{r messages envoyés en réponse, echo=FALSE}
+#library(rtoot)
+#id <- "112370075539544475"
 usernames <- sapply(reply_to, function(id) {
   account <- get_account(id)  # Fetch account details for each ID
   return(account$acct)        # Extract and return the username
