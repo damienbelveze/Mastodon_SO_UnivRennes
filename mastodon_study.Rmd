@@ -9,7 +9,7 @@ output:
 #      toc_float:
 #        collapsed: true
 #        smooth_scroll: false
-      theme: sandstone
+      theme: cerulean
 css: style.css
 bibliography: biblio.bib
 csl: nature.csl
@@ -71,9 +71,9 @@ count_reply_to <- length(reply_to)
 
 ```
 
-# Pourquoi nous avons choisi Mastodon
+# 1. Pourquoi nous avons choisi Mastodon
 
-## Périmètre du compte
+## 1.1 Périmètre du compte
 
 ARDEL, auquel est rattaché le [compte SO_UnivRennes](https://mastodon.social/@SO_UnivRennes) est le service d'**Appui à la Recherche et à la Documentation En Ligne** (ARDEL) du Service Commun de Documentation (SCD) de l'Université de Rennes. L'activité d'ARDEL ne se limite pas à la Science Ouverte, mais elle y prend néanmoins une part importante dans les fiches de postes de 4 agents sur les 6 que compte le service, exclusive chez 2 d'entre eux. 
 
@@ -84,19 +84,20 @@ Inversement, au sein de l'Université de Rennes, la Science Ouverte est présent
 Ces éléments qui ne figurent pas encore sur la "bio" de notre compte a du être précisée dans un message de réponse à une utilisatrice, enseignante-chercheuse à l'Université de Rennes, qui sollicitait notre avis sur une contradiction apparente entre la théorie et la pratique de la Science Ouverte par notre Université.
 Le Service Commun de la Documentation a vocation à contribuer par son expertise à la construction de la politique Science Ouverte de l'Université, mais celle-ci est en dernière instance définie par le conseil scientifique. Le compte SO_UnivRennes communique sur les éléments de cette politique et aide les chercheurs et les chercheuses inscrit.e.s sur Mastodon à la mettre en oeuvre au quotidien.  
 
-## Pourquoi Mastodon
+## 1.2 Mastodon : un choix conforme à la Science Ouverte
 
 Un service comme ARDEL pourrait se satisfaire de l'usage de son site web pour communiquer et de l'utilisation de flux RSS pour suivre les principales évolutions sur la Science Ouverte et la documentation électronique tant les sources d'information fiables et inspirantes sont nombreuses :  sites de revues spécialisées, sites d'institutions de recherche, de chercheurs et chercheuses, et de personnes appartenant au monde de la documentation et des bibliothèques. Devant le discrédit dans lequel X plonge une partie des autres réseaux sociaux, beaucoup d'individus actifs dans le monde du logiciel ou de la recherche quittent ces plateformes dites "sociales" pour passer plus de temps à lire les billets des sites qu'elles apprécient et à écrire et publier des billets sur leur propre site[¹]. 
 
-### Les flux RSS et les sites web ne suffisent pas
+### 1.2.1 Les flux RSS et les sites web ne suffisent pas
 
-Pour notre part, à titre personnel, mais aussi en tant que service, nous considérons que la fréquentation d'un réseau social ajoute à une veille qui reposerait sur des flux l'apport de conversations entre points de vue parfois opposés sur les objets de notre activité ; être témoins de ces conversations, nous permet de prendre en considération dans notre pratique davantage de points de vue et d'affiner nos réponses en fonction de la situation de nos interlocuteurs et interlocutrices. Prendre part à ces conversations permet a fortiori d'éprouver des arguments au contact de collègues ou de personnels de recherche qui ont une autre expérience de terrain que la nôtre. 
+En tant que service, nous considérons que la fréquentation d'un réseau social ajoute un élément important à une veille qui ne reposerait que sur des flux. Cet apport réside dans la confrontation de perpectives différentes sur un même objet, de points de vue parfois opposés sur telle ou telle pratique. Etre témoin de ces conversations nous permet de prendre en considération davantage de situations et d'affiner nos réponses en fonction de celle dans laquelle se trouvent nos interlocuteurs et interlocutrices. Prendre part à ces conversations permet *a fortiori* d'éprouver des arguments au contact de collègues ou de personnels de recherche qui ont une autre expérience de terrain que la nôtre. Bien sûr, les blogs de 2010 donnaient l'occasion d'enclencher ce genre de conversation, mais avec l'essor des réseaux sociaux, force est de constater que les tenanciers de blogs ont perdu l'habitude de répondre aux commentaires de leurs posts. 
 
-Nous pensons toutefois que ces enrichissements ne peuvent avoir lieu que si leur contexte est parfaitement transparent. 
-Par transparence, nous entendons tout d'abord celle de l'algorithme de distribution des message : 
-Tout d'abord, nous devons nous assurer que tout ce qui est posté par un.e utilisatreur.ice du réseau nous parvient sans filtre, à la manière d'un flux RSS qui reproduit fidèlement tout ce qui est posté par la personne qu'on suit. Ce n'était plus le cas sur Twitter déjà bien avant qu'Elon Musk ne le rachète. Mastodon n'est qu'un logiciel dont le code source est accessible. Le réseau social Fedivers dépend d'un protocole (ActivityPub) qui préexistait au logiciel Mastodon et son code est également en accès libre. 
+Nous pensons toutefois que ces conversations ne peuvent être enrichissantes que dans la mesure où elles surviennent dans un climat propice. Ce climat est à la fois une question de comportement (attention, politesse, netétiquette), de réglages (possibilité de bloquer, de signaler des comptes malveillants) et de transparence. Il ne sert à rien de continuer de briser des lances avec les afficionados d'extrême droite qui peuplent X, dans la mesure où le propriétaire du réseau peut à loisir modérer notre écho et amplifier celui de nos adversaires. Quand le jeu est truqué, il faut refuser de jouer. 
 
-### Communiquer, c'est faire du Commun
+Par transparence, nous entendons donc d'abord **transparence de l'algorithme de distribution des messages** : 
+Nous devons nous assurer que tout ce qui est posté par un.e utilisatreur.ice du réseau nous parvient sans filtre, à la manière d'un flux RSS qui reproduit fidèlement tout ce qui est posté par la personne qu'on suit. Ce n'était plus le cas sur Twitter déjà bien avant qu'Elon Musk ne le rachète. Mastodon n'est qu'un logiciel dont le code source est accessible. Le réseau social Fedivers dépend d'un protocole (ActivityPub) qui préexistait au logiciel Mastodon et son code est également en accès libre. 
+
+### 1.2.2 Communiquer, c'est faire du Commun
 
 Nous souhaitons par ailleurs investir du temps dans un Commun, car nous considérons que communiquer, ce n'est pas seulement échanger des messages, mais aussi contribuer au milieu (medium) qui permettra à ces échanges d'avoir lieu. Communiquer, comme le rappelle Arthur Perret, c'est aussi bâtir du Commun (@perretFaireCommun2023a), a contrario des réseaux sociaux centralisés qui privatisent (de la donnée personnelle) et privilégient des points de vue au détriment d'autres par des algorithmes opaques et déloyaux. 
 
@@ -104,7 +105,7 @@ Créer du commun, c'est précisément interroger le medium qu'on utilise, ses r�
 
 Avec Mastodon, il n'y a pas de propriétaire qui décide de cette interopérabilité pour tout le monde. L'administrateurice d'une instance peut rendre le choix de l'ouverture possible à ses utilisateurices (sans pouvoir la rendre obligatoire) ou bien proposer que la connexion ne soit pas possible pour la raison stratégique évoquée. Ces débats ont lieu au sein des instances avec les utilisateurices. Il n'y pas de procédure de vote à notre connaissance, mais les personnes mécontentes de la décision prise peuvent sans perdre l'accès à leur communauté de followers quitter cette instance pour une autre qui correspond mieux à leurs options d'ouverture (ou de fermeture). Cet exemple, montre qu'il est possible de bâtir des Communs avec Mastodon, alors qu'un gouvernement centralisé dans les mains d'un propriétaire qui dispose de toutes les règles et décide de tous les paramétrages obère d'emblée cette construction.  
 
-### La décentralisation, l'atout maître de Mastodon
+### 1.2.3 La décentralisation, l'atout maître de Mastodon
 
 Répétons-le, Mastodon n'est qu'un logiciel et pas un réseau social qui permet d'accéder à un réseau structuré par un protocole d'échange, ActivityPub, l'un et l'autre sont libres. 
 Pour les utilisateurices de X qui ne supportent pas la dégradation de plus en plus nette de leur expérience sur ce réseau et la toxicité accrue du réseau du fait d'une absence de modération, la difficulté d'intégrer Mastodon est en réalité ce qui constitue la richesse de cet écosystème : Mastodon comporte un grand nombre d'instances de tailles et de politiques différentes, et il faut en choisir une : **Où atterrir ?**
@@ -112,7 +113,7 @@ Pour les utilisateurices de X qui ne supportent pas la dégradation de plus en p
 Nous nous sommes évidemment posé la question et nous avons comparé les diverses instances qui accueillent les acteurs de la Science ainsi que celles qui travaillent dans le périmètre de l'Etat. Nous avons d'abord contacté l'instance gérée par la Direction du Numérique (Dinum) qui nous paraissait la plus appropriée, mais faute de réponse de l'administrateur à ce moment-là, nous avons opté pour la solution généraliste *mastodon.social*, celle qui compte le plus grand nombre de comptes hébergés à ce jour. 
 
 Depuis, lors nous avons échangé avec les administrateurs de l'instance *[social.numerique.gouv.fr](https://social.numerique.gouv.fr/explore)* de la [Direction Interministérielle du Numérique](https://www.numerique.gouv.fr/dinum/) qui nous incitent à choisir leur serveur dédié aux services de l'Etat. Dans le même temps, nous sommes en contact avec un agent du [Service interuniversitaire en charge de la mutualisation numérique en île-de-France (UNIF)](https://unif.fr/qui-sommes-nous/). 
-L'UNIF se propose de lancer prochainement une instance destinée au monde universitaire qui intègrerait le protocole Shibboleth pour permettre à ses membres d'accéder à leur compte via leurs identifiants universitaires. Cette possibilité rendrait notre compte plus résistant aux attaques d'usurpation, dans la mesure où sur une instance dépourvue de ce type de gestion de droits, il n'est pas possible de mettre en place un système de double authentification impliquant une application idoine sur un smartphone commun. 
+L'UNIF a ouvert fin janvier une [instance destinée au monde universitaire qui intègre la Fédération d'Identité](https://universites.social/about). L'accès se fait au moyen d'identifitants universitaires. Ce mode d'accès rendrait un compte partagé comme le nôtre plus résistant aux attaques d'usurpation, dans la mesure où sur une instance dépourvue de ce type de gestion de droits, il n'est pas possible de mettre en place un système de double authentification impliquant une application idoine sur un smartphone commun. 
 
 Nous avons mentionné la dégradation de l'expérience usager sur une plateforme comme X/Twitter. 
 Cory Doctorow qui a étudié ce phénomène commun à nombre de plateformes ultra-dominantes sur le marché à forgé à ce sujet le concept d'**emmerdification** (enshittification). 
@@ -132,13 +133,16 @@ Le financement de Bluesky condamne ses administrateurices à la pression d'un re
 
 Ajoutons à cela que des ponts techniques (*bridges*) existent entre les protocoles de Bluesky et de Mastodon, nous en reparlerons. Ces ponts permettent aux utilisateurices de chaque plateforme de suivre celles de l'autre, ces trois raisons (décentralisation effective, organisation à but non lucratif, interopérabilité avec le protocole AT) fait qu'ARDEL n'envisage pas de créer un compte sur Bluesky et de crossposter. 
 
-### Qu'en est-il des autres alternatives : LinkedIn et Threads
+## 1.3 Qu'en est-il des autres alternatives : LinkedIn et Threads
 
-Threads partage avec Mastodon un même protocole, mais les règles y sont très différentes. l'algorithme du réseau expose du contenu provenant de comptes qu'on ne suit pas et il est impossible pour l'usager qu'il en soit autrement, on ne peut donc parler d'un algorithme loyal ni transparent. La modération y sera sous peu soumise aux nouvelles régles de "modération" imposées aux équipes de Meta : la modération des contenus ne sera plus confiée à des officines extérieures (rédaction de journaux) mais aux usagers eux-mêmes qui décideront collaborativement de l'acceptabilité d'un post ; un Commun ? cette mesure déjà appliquée à d'autres réseaux de la *Broligarchie* n'aura pas pour effet de garantir la liberté d'expression contre les sachants, mais de déplacer la fenêtre d'Overton encore plus vers la droite (et de la fermer à gauche) selon les intérêts du moment du PDG de Meta.
+### 1.3.1 Threads
+
+Threads partage avec Mastodon un même protocole, mais les règles y sont très différentes. l'algorithme du réseau expose du contenu provenant de comptes qu'on ne suit pas et il est impossible pour l'usager qu'il en soit autrement, on ne peut donc parler d'un algorithme loyal ni transparent. La modération y sera sous peu soumise aux nouvelles régles de "modération" imposées aux équipes de Meta : la modération des contenus ne sera plus confiée à des officines extérieures (rédaction de journaux) mais aux usagers eux-mêmes qui décideront collaborativement de l'acceptabilité d'un post ; un Commun ? cette mesure déjà appliquée à d'autres réseaux de la *Broligarchie*[²] n'aura pas pour effet de garantir la liberté d'expression contre les sachants, mais de déplacer la fenêtre d'Overton encore plus vers la droite (et de la fermer à gauche) selon les intérêts du moment du PDG de Meta.
 Bien sûr il y a aussi des instances sur Mastodon tenues par des libertariens et des climaosceptiques, mais nul n'est obligé de s'y inscrire. Il y a tant d'autres instances possibles où atterrir. Piaille par exemple régule les échanges et bannit les contenus ouvertement climatosceptiques en tant que "désinformation" conformément à sa charte [³]. 
 
 Threads, comme Facebook ne sont pas moins orthogonaux que X avec les idéaux d'universalisme et de recherche de la vérité scientifique des universités. Le RGPD commanderait aussi de ne jamais laisser de pouce levé sur une page de nos universités, ce qui revient à laisser constituer des "shadow profiles" à partir des données de navigation de nos usagers, mais on sait ce qu'il en est dans la réalité. Pour les bibliothèques, l'impératif d'aller "où sont nos usagers" semble prévaloir dans les choix opérés à la faveur du #HelloquitteX. Pour autant, cet impératif n'a que rarement incité ces établissements ou les universités à ouvrir un compte sur le réseau Tiktok, un lieu très fréquentés les usagers et usagères des 18-25 ans  l'emporte nettement sur notre recheche de cohérence entre nos valeurs et les outils qu'on utilise, ainsi bien sûr que cette pédagogie du numérique que nous devons à nos étudiants et qui devrait nous inciter à leur présenter de nouvelles manières plus éthiques de communiquer en ligne.
 
+### 1.3.2 LinkedIn
 
 LinkedIn est un réseau largement utilisé par des chercheurs et les chercheuses pour entretenir un réseau professionnel afin d'y trouver une visibilité pour de futurs employeurs et des opportunités de partenariats ou d'embauches. Ces enjeux n'ont que peu de liens avec l'objet qui occupe ARDEL, la Science Ouverte. 
 LinkedIn est également un réseau qui illustre le concept de capitalisme de plateforme tel que défini par Shoshana Zuboff. Les données personnelles qui y sont échangées (et vraisemblablement certaines autres qui sont directement prélevées auprès de ou de la nouvelle inscrite) servent à accroître la valeur monétaire du réseau.
@@ -146,12 +150,23 @@ La position de LinkedIn vis à vis des contenus générés par des outils d'inte
 La Science Ouverte n'a rien à faire ni rien à gagner dans un univers aussi synthétique. 
 
 
-# Analyse de notre activité sur Mastodon
+## 1.4 Ouverture d'un compte sur Mastodon
+
+Le contexte du rachat de Twitter par Elon Musk et les mises en veille successives des comptes X des Universités de Rennes 2 puis de Rennes ont amené les services de communication de ces deux universités à revoir leur politique relative aux médias sociaux. Nous avons mené notre propre réflexion de notre côté sous la supervision de la direction de la bibliothèque et du service de communication de l'Université de Rennes. Nous avons ouvert le compte SO_UnivRennes le 2 mai 2024 non sans avoir au préalable sélectionné une liste de comptes à suivre en rapport avec nos activités. L'usage de Mastodon par l'un d'entre nous a certes facilité ce travail d'argumentation et d'identification des instances d'hébergement et de comptes à suivre. Le message le plus populaire (d'après le site [Mastodon Academy](https://mastodon.academy/by/@SO_UnivRennes@mastodon.social)) que nous avons envoyé sur Mastodon comportait un lien vers le [guide de démarrage sur Mastodon](https://zenodo.org/records/14170125) republié en novembre 2024 par les collectifs The Carpentries et rOpenSci. Nous espérons comme les auteurs de ce guide que cette ressource a déjà aidé et aidera encore les institutions de recherche à mieux comprendre le Fédivers et à s'y domicilier pour communiquer avec leurs communautés. 
+Nous avons aussi bénéficié des informations envoyées sur la liste de diffusion ["Transition Réseaux Sociaux"](https://groupes.renater.fr/sympa/info/transition_reseaux_sociaux) ouverte par la BULAC qui cherchait à la même époque à quitter X pour des réseaux plus éthiques. La BULAC est aujourd'hui présente sur Mastodon et Bluesky. Nous recommandons aux bibliothèques qui voudraient se lancer dans l'un ou l'autre de s'incrire à cette liste. 
+Afin de pouvoir suivre les utilisateurices de Bluesky qui ont activé leur pont vers Mastodon, nous avons activé le nôtre en direction de Bluesky. Nous en avons déjà parlé, nous y reviendrons. 
+Nous avons mené une recherche sur les mots-clé en rapport avec notre université, sans détecter beaucoup de comptes provenant de notre communauté. Les "migrations" de comptes universitaires de X vers les réseaux alternatifs n'avaient pas encore trouvé leur pic (le 20 janvier avec le mot d'ordre #HelloquitteX). 
+Nous avons entamé en direction du Service Communication de l'Université une demande en vue d'introduire notre handle Mastodon dans le code source d'une page de notre site. Ce handle doit figurer dans l'entête ce qui nécessite des droits complets d'administration sur ce site. La vérification des comptes n'existe pas sur Mastodon, mais on peut en revanche certifier que tel compte appartient bien à telle institution qui a la main sur tel ou tel site, ce qui permet au compte en question de bénéficier de la confiance accordée au site (@godefroidCommentCertifierCompte2024a).  
+Cette fonctionnalité permettrait en outre d'afficher notre profil en lien avec n'importe lequel de nos posts quelque soit l'utilisateurice qui le boosterait (@rochkoHighlightingJournalismMastodon2024). 
+
+
+
+# 2. Analyse de notre activité sur Mastodon
 
 L'activité sur Mastodon peut être mesurée et interrogée au moyens d'API. Des collectifs ont commencé à distribuer des librairies pour R et pour Python qui permettent à des chercheurs et chercheuses d'extraire des contenus de la plateforme (listes d'utilisateurs, listes de statuts comportant un mot clé donné sur une instance ou plusieurs). Mais ces librairies sont également utiles pour des administrateurices d'instances afin de connaître le contenu qui transite par leur serveur en interaction avec les autres serveurs fédérés ou aux détenteurs de comptes individuels ou collectifs comme le nôtre. 
 Nous avons décidé de mener cette analyse avec un package réalisé pour R, car le mode d'authentification promu par ce package nous a semblé plus simple que celui mis en oeuvre par la [librairie Python](https://mastodonpy.readthedocs.io/en/stable/) conçue pour Mastodon. 
 
-## Le package Rtoot
+## 2.1 Le package Rtoot
 
 David Schoch et Chung-Hong Chan sont à l'origine du package Rtoot conçu pour R qu'ils ont présenté dans les colonnes de la revue *Mobile Media & Communication* (@schochSoftwarePresentationRtoot2023a). Ce paquet est téléchargeable [depuis le répertoire du CRAN](https://cran.r-project.org/web/packages/rtoot/index.html). Comme une partie des requêtes possibles par API nécessite une authentification, ce package gère cette authentification au moyen d'un token qui peut être obtenu quand on est connecté au compte à analyser. 
 
@@ -184,19 +199,26 @@ print(id)
 Dans le présent document, les chiffres en bleu et en gras comportent les chiffres obtenus lorsqu'on a exécuté pour la dernière fois la commande auth_setup (=lorsqu'on a compilé le présent document pour la dernière fois), c'est à dire à cette date : <div class="blue">`r last_run_time`</div>.
 
 
+## 2.2 Présence de Mastodon dans l'enseignement supérieur français et européen d'après les données de Wikidata
+
+La plupart des bibliothèques qui ont quitté X se sont demandé où allaient leurs usagers. Question très légitime, même si l'on devrait garder une distance critique vis à vis de la réponse. Doit-on suivre la masse de nos anciens followers ou bien doit-on suivre plutôt les opportunités qui s'ouvrent à nous, dans un contexte où la plus grande partie des réseaux sociaux, en fait tous les réseaux sociaux centralisés, suivent les évolutions et les crises du capitalisme.
+Pour notre part, nous avons cherché à savoir quels mouvements étaient à l'oeuvre au sein des institutions de recherche d'une part et des bibliothèques d'autre part, une bibliothèque universitaire partageant des traits communs à l'un et l'autre monde. Nous avons souhaité aussi observer ces dynamiques au niveau international et pas seulement au niveau français, afin d'être en mesure d'évaluer les ressorts nationaux qui peuvent aider ou entraver l'adoption de réseaux sociaux vraiment alternatifs comme Mastodon.
+
+### 2.2.1 Comptes gérés par des universités et instituts de recherche
+
+Pour obtenir des informations sur l'adoption des réseaux sociaux par les institutions de recherche et les bibliothèques, nous nous sommes fondés sur les données de Wikidata. Une source sans doute incomplète mais qui permet néanmoins d'obtenir des résultats qui nous paraissent significatifs et qui sont reproduits ci-dessous. 
+
+Une requête Wikidata permet d'obtenir la liste des institutions de recherche qui **d'après les données de Wikidata** se sont dotées d'un compte Mastodon, Bluesky, etc.
+Le logiciel R au moyen du [package wikidataR](https://cran.r-project.org/web/packages/WikidataR/WikidataR.pdf) permet d'initier cette requête dans l'environnement d'édition de R, ce qui est la méthode que nous avons suivie.
+La fiabilité de ces chiffres obtenus dépend du travail d'enrichissement que la communauté opère sur Wikidata à partir des données présentes sur le web. 
+Techniquement, il est possible de remplir un tableau avec une liste d'institutions dans la première colonne, leur identifiant Wikidata dans la seconde, et dans la troisième, la liste de leurs *handles* (identifiants) sur les différents réseaux sociaux, pour enrichir leurs profils sur Wikidata. Le package WikidataR prend également en charge cette fonction de "quickstatement" groupé. Mais ces tableaux sont fastidieux à faire. Nous ne connaissons pas de système pour recueillir automatiquement et automatiser l'alignement de ces identifiants. Nous nous basons donc sur une somme importante de petits enrichissements qui ont été réalisés sur un grand nombre d'internautes qui savent éditer Wikidata et ont à coeur d'y compléter le profil de leur institution. 
 
 
-
-## Présence de Mastodon dans l'enseignement supérieur français
-
-### Comptes gérés par des universités et instituts de recherche
-
-Une requête Wikidata permet d'obtenir la liste des institutions de recherche qui d'après les données de Wikidata se sont dotées d'un compte Mastodon.
-Cette requête peut se faire depuis R au moyen du [package wikidataR](https://cran.r-project.org/web/packages/WikidataR/WikidataR.pdf). 
 Le résultat de cette requête est lisible dans le [fichier Wikidata_all.csv](wikidata_all.csv) 
 
-Quels types de comptes "alternatifs" à X/Twitter, Facebook ou Instagram (Meta) les institutions de recherche ouvrent-ils ?  
-Nous faisons entrer ici comme *alternatifs* des réseaux que nous en considérons pas comme de réelles alternatives (puisque pour nous seuls les services actuellement présents sur le Fédivers méritent vraiment ce nom). Nous mentionnons ici les services vers lesquels se tournent usagers et institutions lorsqu'ils désirent quitter X ou Facebook. 
+Quels types de comptes "alternatifs" à X/Twitter, Facebook ou Instagram (Meta) les institutions de recherche ouvrent-elles lorsqu'elles quittent X ?
+
+Nous faisons entrer ici dans la catégorie *réseaux alternatifs* des réseaux que nous en considérons pas comme de réelles alternatives (puisque pour nous seuls les services actuellement présents sur le Fédivers méritent vraiment ce nom), mais qui sont souvent considérés comme tels dans les études portant sur l'émigration en cours des comptes de chercheurs et chercheuses hors de Twitter.
 La littérature scientifique sur le sujet mentionne essentiellement Mastodon, Bluesky, Threads et LinkedIn comme réseaux de destination et c'est une sélection que nous reprenons à notre compte. 
 
 ```{r requête Wikidata tous pays, echo=FALSE}
@@ -310,7 +332,7 @@ p_libraries + coord_flip() + labs(x="nombre de comptes ouverts",y="réseau",
                title="Bibliothèques dans Wikidata")
 
 ```
-Selon les données prélevées au 24 janvier 2025, il semble que proportionnellement les bibliothèques aient un peu plus investi dans Mastodon et un peu moins dans Bluesky que les institutions de recherche (même si nombre d'entre elles sont présentes sur les deux réseaux). L'investissement dans Threads est également un peu moins fort du côté des bibliothèques, ce qui peut peut-être s'expliquer par une sensibilité plus grande à l'égard de réseaux décentralisés ou transparents. Ce n'est qu'une hypothèse bien sûr qu'il faudra vérifier avec le temps ou bien avec des données plus représentatives que celles qui sont sur Wikidata.  
+Selon les données prélevées au 24 janvier 2025, il semble que proportionnellement les bibliothèques aient été plus nombreuses que les institutions de recherche à investir Mastodon et un peu moins que ces dernières à investir Bluesky (même si nombre d'entre elles sont présentes sur les deux réseaux). L'investissement dans Threads est également un peu moins fort du côté des bibliothèques. Peut-être cela s'explique t-il par une sensibilité plus grande à l'égard de réseaux décentralisés ou transparents. Ce n'est qu'une hypothèse bien sûr qu'il faudra vérifier avec le temps ou bien avec des données plus représentatives que celles qui sont sur Wikidata.  
 
 Dans quels pays trouve t-on le plus de comptes Mastodon rattachés à des institutions de recherche ?
 
@@ -353,9 +375,10 @@ q_libraries <- ggplot(top10_df_libraries, aes(x = reorder(Pays_libraries, -Nombr
 q_libraries + coord_flip()
 
 ```
-Au 24 janvier 2025, l'Allemagne est le pays dont à la fois les institutions de recherche et les bibliothèques ont le plus investi Mastodon. Le nombre de comptés rattachés à l'Allemagne dans Wikidata est supérieur à celui des Etats-Unis. La principale différence entre institutions de recherche et bibliothèques concerne le placement des Pays-Bas. Tandis que ce pays n'occupe que la 9ème place dans le classement pour les Institutions de recherche, il obtient la troisième place (deuxième pour l'Europe devant la France) en ce qui concerne l'implantation de Mastodon dans les politiques de communication des bibliothèques. 
+Au 24 janvier 2025, l'Allemagne est le pays dont à la fois les institutions de recherche et les bibliothèques ont le plus investi Mastodon. Le nombre de comptes rattachés à l'Allemagne dans Wikidata est supérieur à celui des Etats-Unis. La principale différence entre institutions de recherche et bibliothèques concerne le placement des Pays-Bas. Tandis que ce pays n'occupe que la 9ème place dans le classement pour les Institutions de recherche, il obtient la troisième place (deuxième pour l'Europe devant la France) en ce qui concerne l'implantation de Mastodon dans les politiques de communication des bibliothèques. 
 
-Il faudrait une recherche plus approfondie pour expliquer pourquoi Mastodon est mieux implanté dans les bibliothèques allemandes et néerlandaises que dans les bibliothèques françaises (et davantage utilisé par les institutions de recherche allemandes que par leurs équivalents français). L'histoire administrative de l'Allemagne et de la France (décentralisation vs centralisation) joue t-elle un rôle ? Le public français, notamment scientifique, est-il plus simple à cette réputation de difficulté de Mastodon que nous contestons dans les faits ? La pression sociale pour aller d'une plateforme centralisée comme X à cette autre plateforme centralisée qu'est Bluesky est-elle plus grande ici que chez nos voisins d'Outre-Rhin ?
+Il faudrait une recherche plus approfondie pour expliquer pourquoi Mastodon est mieux implanté dans les bibliothèques allemandes et néerlandaises que dans les bibliothèques françaises (et davantage utilisé par les institutions de recherche allemandes que par leurs équivalents français). L'histoire administrative de l'Allemagne et de la France (décentralisation vs centralisation) joue t-elle un rôle ? La nationalité du concepteur de l'application, Eugen Rochko joue t-elle un rôle dans ce niveau d'adoption ? Le public français, notamment scientifique, est-il plus simple à cette réputation de difficulté de Mastodon que nous contestons dans les faits ? La pression sociale pour aller d'une plateforme centralisée comme X à cette autre plateforme centralisée qu'est Bluesky est-elle plus grande ici que chez nos voisins d'Outre-Rhin ?
+Il faut observer que le régime politique allemand est directement ciblé par la propagande politique du propriétaire de X [⁴], ce qui a conduit des collectivités locales à quitter plus rapidement X qu'en France. Les services du Délégué à la Protection des Données du Bad-Würtemberg [héberge une instance](https://bawü.social/explore) qui sert de référence aux administrations. 
 
 
 
@@ -434,7 +457,7 @@ La provenance des followers est sans doute peu représentative de l'importance d
 Framapiaf, l'instance mise en place par l'association Framasoft a connu un vif succès à ces débuts mais a déliberemment clos sa plateforme aux inscriptions après avoir dépassé les 9000 abonnés. L'idée d'une croissance infinie est fort éloignée des préoccupations des administrateurs et administratrices de Mastodon qui doivent pouvoir équilibrer la taille d'une communauté avec le type de service et de modération qu'ils ou elles peuvent rendre. 
 Parmi nos followers, l'instance social.sciences.re (940 comptes) est sur-représentée par rapport à celle de Piaille qui en compte 12000, Mais Piaille bien qu'administrée par des personnes gravitant dans le monde de la Science, comme Célian Godefroid, [juriste rattaché aux BU de Paris-Saclay](https://mastodon.social/@CelianGodefroid@piaille.fr) n'est pas une instance scientifique à proprement parler (contrairement à Fediscience et ses 1100 abonnés préoccupés de Recherche) 
 
-Comme nous avons immédiatement activé un pont avec Bluesky, notre compte peut être suivi depuis ce réseau avec l'alias [SO-UnivRennes.mastodon.social.ap.brid.gy](https://bsky.app/profile/SO-UnivRennes.mastodon.social.ap.brid.gy), ce qui permet à <div class="blue">`r bsky`</div> utilisateurs ou utilisatrices de cette plateforme de rester en contact avec nous (à l'exception des messages privés que les ponts ne peuvent pas gérer. Les interactions publiques elles sont bien transmises) @turnerBridgyFedLinking2024.
+Comme nous avons immédiatement activé un pont avec Bluesky, notre compte peut être suivi depuis ce réseau avec l'alias [SO-UnivRennes.mastodon.social.ap.brid.gy](https://bsky.app/profile/SO-UnivRennes.mastodon.social.ap.brid.gy), ce qui permet à <div class="blue">`r bsky`</div> utilisateurs ou utilisatrices de cette plateforme de rester en contact avec nous (à l'exception des messages privés que les ponts ne peuvent pas gérer. Les interactions publiques elles sont bien transmises) @turnerBridgyFedLinking2024. 
 
 
 ```{r traitement de la colonne content, include=FALSE}
@@ -688,3 +711,4 @@ Des échanges très riches dans la grande majorité des cas et qui installent de
 [¹]: voir par exemple l'édito de Korben (https://korben.info/sacs-a-merde.html)
 [²]: Collusion des Tech Bros, magnats de la technologie américaine pour soutenir une présidence qui sert leurs intérêts économiques et leur permet d'empêcher la constitution de lois anti-trust.
 [³]: extrait de la charte de modération de Piaille : Il est interdit de publier ou diffuser intentionnellement des propos diffamatoires, calomnieux, ainsi que toute désinformation avec intention de tromper. Voir son application ici : https://piaille.fr/@CelianGodefroid/113865530173097447 
+[⁴]: Elon Musk invite sur X les Allemands à voter pour l'AFD, un parti notoirement raciste et anti-démocratique adapte de la déportation des personnes issues de l'immigration vers des pays Africains.
