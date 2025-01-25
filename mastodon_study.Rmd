@@ -30,43 +30,37 @@ options(readr.show_col_types = FALSE) #voir ici https://github.com/tidyverse/rea
 library(rtoot)
 library(tidyverse)
 library(dplyr)
-library(tufte)
 
-last_run_time <- Sys.time()
+last_run_time <- Sys.time() # marque le moment d'exécution du script
 id <- "112370075539544475"
-followers <- get_account_followers(id, limit = 300L)
-following <- get_account_following(id, limit = 300L)
-lists <- get_account_lists(id, token = NULL, parse = TRUE)
-print(lists)
-#relationships <- get_account_relationships(id, limit = 300L)
-dataframe <- get_account_statuses(id, limit = 400L)
-toots <- get_account_statuses(id, exclude_reblogs = TRUE, limit = 400L)
-sent <- as.integer(length(dataframe$id))
+followers <- get_account_followers(id, limit = 400L) # récupération des followers. une limite doit être fixée pour que le script fonctionne et récupère tous les messages, la situer à la centaine supérieure par rapport au nombre de messages envoyés d'après le profil du compte
+following <- get_account_following(id, limit = 400L) 
+lists <- get_account_lists(id, token = NULL, parse = TRUE) # code utilisé pour récupérer les listes dans lesquelles a été intégré le compte étudié - nous ne sommes pas arrivés à la faire fonctionner
+#relationships <- get_account_relationships(id, limit = 300L) Les relationships concernent les relations que le compte étudié entretient avec d'autres comptes. Par exmple le blocage est un type de relation (négative certes)
+dataframe <- get_account_statuses(id, limit = 400L) # récupération des messages - une limite doit être fixée pour que le script fonctionne et récupère tous les messages, la situer à la centaine supérieure par rapport au nombre de messages envoyés d'après le profil du compte
+toots <- get_account_statuses(id, exclude_reblogs = TRUE, limit = 400L) #récupération des messages moins les boosts (les messages d'autrui que nous avons reposés). Nécessaire pour déterminer par soustraction de l'ensemble des messages, les messages qui ont été boostés. 
+sent <- as.integer(length(dataframe$id)) 
 toots <- as.integer(length(toots$id))
 boosts <- (sent - toots)
 reblogs <- sum(dataframe$reblogs_count)
-favourites <- sum(dataframe$favourites_count)
-replies <- sum(dataframe$replies_count)
-reply_to <-dataframe$in_reply_to_id
+favourites <- sum(dataframe$favourites_count) # nombre de messages mis en favoris par le message concerné
+replies <- sum(dataframe$replies_count) # nombre de messages reçus en réponse d'un message du compte concerné
+reply_to <-dataframe$in_reply_to_id # nombre de messages envoyés en réponse à quelqu'un 
 
-followers_number <- length(followers$id)
-following_number <- length(following$id)
-#relationships_number <- length(relationships$id)
-status_number <- length(dataframe$id)
-#print(dataframe)
+followers_number <- length(followers$id) # nombre de folloxers du compte
+following_number <- length(following$id) # nombre de personnes que suit le compte concerné
+status_number <- length(dataframe$id) # nombre de messages envoyés
+write_csv(dataframe, "SO_univrennes_toots.csv") # création d'un fichier CSV de messages envoyés
+write_csv(followers, "followers.csv") # création d'un fichier CSV de followers
 
-write_csv(dataframe, "SO_univrennes_toots.csv")
-write_csv(followers, "followers.csv")
-#write_csv(relationships, "relationships.csv")
-#print(followers)
-#print(followers_number)
 ```
 
 
 ```{r replies to users, include=FALSE}
+# traitement des réponses reçues suite à des messages envoyés par le compte
 
 reply_to <- dataframe$in_reply_to_account_id %>%
-    .[!is.na(.) & . != "NA"]   #
+    .[!is.na(.) & . != "NA"]   #suppression des lignes vides
 count_reply_to <- length(reply_to)
 
 ```
@@ -92,6 +86,8 @@ Un service comme ARDEL pourrait se satisfaire de l'usage de son site web pour co
 
 En tant que service, nous considérons que la fréquentation d'un réseau social ajoute un élément important à une veille qui ne reposerait que sur des flux. Cet apport réside dans la confrontation de perpectives différentes sur un même objet, de points de vue parfois opposés sur telle ou telle pratique. Etre témoin de ces conversations nous permet de prendre en considération davantage de situations et d'affiner nos réponses en fonction de celle dans laquelle se trouvent nos interlocuteurs et interlocutrices. Prendre part à ces conversations permet *a fortiori* d'éprouver des arguments au contact de collègues ou de personnels de recherche qui ont une autre expérience de terrain que la nôtre. Bien sûr, les blogs de 2010 donnaient l'occasion d'enclencher ce genre de conversation, mais avec l'essor des réseaux sociaux, force est de constater que les tenanciers de blogs ont perdu l'habitude de répondre aux commentaires de leurs posts. 
 
+<img src="images/ecole_athene.jpg" alt="Ecole d'Athenes par Raphaël https://commons.wikimedia.org/w/index.php?search=ecole+d%27athenes+raphael&title=Special:MediaSearch&go=Go&type=image" />
+
 Nous pensons toutefois que ces conversations ne peuvent être enrichissantes que dans la mesure où elles surviennent dans un climat propice. Ce climat est à la fois une question de comportement (attention, politesse, netétiquette), de réglages (possibilité de bloquer, de signaler des comptes malveillants) et de transparence. Il ne sert à rien de continuer de briser des lances avec les afficionados d'extrême droite qui peuplent X, dans la mesure où le propriétaire du réseau peut à loisir modérer notre écho et amplifier celui de nos adversaires. Quand le jeu est truqué, il faut refuser de jouer. 
 
 Par transparence, nous entendons donc d'abord **transparence de l'algorithme de distribution des messages** : 
@@ -114,6 +110,8 @@ Nous nous sommes évidemment posé la question et nous avons comparé les divers
 
 Depuis, lors nous avons échangé avec les administrateurs de l'instance *[social.numerique.gouv.fr](https://social.numerique.gouv.fr/explore)* de la [Direction Interministérielle du Numérique](https://www.numerique.gouv.fr/dinum/) qui nous incitent à choisir leur serveur dédié aux services de l'Etat. Dans le même temps, nous sommes en contact avec un agent du [Service interuniversitaire en charge de la mutualisation numérique en île-de-France (UNIF)](https://unif.fr/qui-sommes-nous/). 
 L'UNIF a ouvert fin janvier une [instance destinée au monde universitaire qui intègre la Fédération d'Identité](https://universites.social/about). L'accès se fait au moyen d'identifitants universitaires. Ce mode d'accès rendrait un compte partagé comme le nôtre plus résistant aux attaques d'usurpation, dans la mesure où sur une instance dépourvue de ce type de gestion de droits, il n'est pas possible de mettre en place un système de double authentification impliquant une application idoine sur un smartphone commun. 
+
+<img src="images/postier.jpg" alt=" Postman in front of a house, Gerrit Zegelaar, https://commons.wikimedia.org/wiki/File:Gerrit_Zegelaar_-Postman.jpg"/>
 
 Nous avons mentionné la dégradation de l'expérience usager sur une plateforme comme X/Twitter. 
 Cory Doctorow qui a étudié ce phénomène commun à nombre de plateformes ultra-dominantes sur le marché à forgé à ce sujet le concept d'**emmerdification** (enshittification). 
@@ -138,7 +136,9 @@ Ajoutons à cela que des ponts techniques (*bridges*) existent entre les protoco
 ### 1.3.1 Threads
 
 Threads partage avec Mastodon un même protocole, mais les règles y sont très différentes. l'algorithme du réseau expose du contenu provenant de comptes qu'on ne suit pas et il est impossible pour l'usager qu'il en soit autrement, on ne peut donc parler d'un algorithme loyal ni transparent. La modération y sera sous peu soumise aux nouvelles régles de "modération" imposées aux équipes de Meta : la modération des contenus ne sera plus confiée à des officines extérieures (rédaction de journaux) mais aux usagers eux-mêmes qui décideront collaborativement de l'acceptabilité d'un post ; un Commun ? cette mesure déjà appliquée à d'autres réseaux de la *Broligarchie*[²] n'aura pas pour effet de garantir la liberté d'expression contre les sachants, mais de déplacer la fenêtre d'Overton encore plus vers la droite (et de la fermer à gauche) selon les intérêts du moment du PDG de Meta.
-Bien sûr il y a aussi des instances sur Mastodon tenues par des libertariens et des climaosceptiques, mais nul n'est obligé de s'y inscrire. Il y a tant d'autres instances possibles où atterrir. Piaille par exemple régule les échanges et bannit les contenus ouvertement climatosceptiques en tant que "désinformation" conformément à sa charte [³]. 
+Bien sûr il y a aussi des instances sur Mastodon tenues par des libertariens et des climatosceptiques, mais nul n'est obligé de s'y inscrire. Il y a tant d'autres instances possibles où atterrir. Piaille par exemple régule les échanges et bannit les contenus ouvertement climatosceptiques en tant que "désinformation" conformément à sa charte [³]. 
+
+<img src="images/Petain.jpg" alt="Le maréchal Pétain écoutant la voix de son maître, caricature signée Arthur Szyk, New York, 1941. https://commons.wikimedia.org/wiki/File:Arthur_Szyk_-_Le_mar%C3%A9chal_P%C3%A9tain_%C3%A9coutant_la_voix_de_son_ma%C3%AEtre.jpg" />
 
 Threads, comme Facebook ne sont pas moins orthogonaux que X avec les idéaux d'universalisme et de recherche de la vérité scientifique des universités. Le RGPD commanderait aussi de ne jamais laisser de pouce levé sur une page de nos universités, ce qui revient à laisser constituer des "shadow profiles" à partir des données de navigation de nos usagers, mais on sait ce qu'il en est dans la réalité. Pour les bibliothèques, l'impératif d'aller "où sont nos usagers" semble prévaloir dans les choix opérés à la faveur du #HelloquitteX. Pour autant, cet impératif n'a que rarement incité ces établissements ou les universités à ouvrir un compte sur le réseau Tiktok, un lieu très fréquentés les usagers et usagères des 18-25 ans  l'emporte nettement sur notre recheche de cohérence entre nos valeurs et les outils qu'on utilise, ainsi bien sûr que cette pédagogie du numérique que nous devons à nos étudiants et qui devrait nous inciter à leur présenter de nouvelles manières plus éthiques de communiquer en ligne.
 
@@ -383,6 +383,8 @@ Il faut observer que le régime politique allemand est directement ciblé par la
 En France, on reproche souvent à Mastodon d'encourager un "entre-soi", alors même que les algorithmes de X et de Meta poussent la bulle de filtre à des niveaux jamais atteints, qui permettent de se façonner un monde fidèle à l'image qu'on veut en avoir. Cette image défavorable tient sans doute au fait que le choix d'une instance implique un tiers de confiance, des affinités préalablement établies avant l'arrivée sur Mastodon. Par exemple, si on apprécie les travaux de la Quadrature du Net, on aura tendance à se faire héberger sur mamot.fr, l'instance mise en place par cette association. Pour autant, un internaute depuis son instance voit très majoritairement passer des messages provenant d'autres instances. 
 Par ailleurs, beaucoup de personnes qui se retrouvent dans Mastodon avaient au préalable tenté leur chance sur Twitter et en sont partie dégoûtées, souvent bien avant le mouvement HelloquitteX. Les valeurs que ces personnes affichent sont de manière assez logique aux antipodes de celles de X. Plus les utilisateurs de X vantent les Tesla, les cryptomonnaies, l'énergie masculine chère à Marc Zuckerberg, et conspuent le wokisme et plus les valeurs écologiques dont le vélotaf, la régulation des flux financiers et les valeurs progressistes dont le féminisme et le respect des personnes LGBTQI+ s'affichent dans les statuts et les chartes de modération. 
 
+<img src="images/integration.jpg" alt="dessin de Samboyy illustratrice arrivée sur Mastodon le 18 janvier 2025. Le dessin joue avec les stéréotypes qui circulent sur le réseau et ses utilisateurices, source : https://piaille.fr/@Samboyy/113856159030758239 " />
+
 Quant aux compétences techniques que les utilisateurices de Mastodon sont censées avoir en abondance, on devrait parler plus simplement d'une culture numérique, ou d'une forme de compréhension du numérique qui permet en effet de résister à la pression sociale qui fait transiter les utiliateurices d'une plateforme centralisée à une autre. 
 
 ## 2.3 Chiffres sur l'activité de notre compte
@@ -414,27 +416,34 @@ Voici la liste des hashtags arborés par nos followers :
 ```{r echo=FALSE}
 library(dplyr)
 library(stringr)
-#pattern <- "\"https.*/tags/.*\""
+# dans la colonne "note" qui contient du texte et des balises html, récupération des chaînes de caractère qui correspondent au patterne "\"https.*/tags/.*\""
 pattern <- "(?<=/tags/)[^<\"]+"
-# Apply the regex and extract the matched parts into a new column 'tag'
+# applique cette expression régulière à la colonne "note" et extrait les chaînes de caractères qui lui correspondant pour les coller dans une nouvelle colonne "tag"
 followers <- followers %>%
   mutate(tag = str_extract(followers$note, pattern))
 followers$tag <- URLdecode(followers$tag)
 tag_list <- followers$tag %>%
-    .[!is.na(.) & . != "NA"]   # Extract the 'tag' column as a vector
-#  unique()                 # Get unique tags
+    .[!is.na(.) & . != "NA"]   # extrait la colonne tag comme vecteur
 
-# Print the list of unique tags
+# affiche la liste des tags sans numérotation
 cat(tag_list)
-write.csv(tag_list,"tag_list.csv")
+write.csv(tag_list,"tag_list.csv") # crée un fichier avec tous les tags arborés par les profils des followers du compte
 write.csv(followers,"followers.csv")
 ```
 
+Le 24 janvier, nous avons catégorisé l'ensemble de ces hashtags : 
+
+<img src="images/themes_hashtags.png" alt="liste des hashtags répartie en différentes catégories thématiques" />
+
+ESR = Enseignement Supérieur et Recherche
+IST = Information Scientifique et Technique
+GLAM = galeries, musées, bibliothèques, Archives
+Sujet d'étude, discipline = le follower indique le champ disciplinaire auquel il/elle appartient ou bien son objet d'étude principal
 
 ## 2.4.2 Instances des followers
 
 ```{r instance des followers, echo=FALSE}
-# extracting instances from accounts can also be performed within rtoot : https://schochastics.github.io/rtoot2022/#/interlude-extract-instances-from-statuses-1
+# extraction des instances dans les adresses des followers : https://schochastics.github.io/rtoot2022/#/interlude-extract-instances-from-statuses-1
 library(stringr)
 followers_url <- (followers$url)
 followers_url <- data.frame(followers_url, stringsAsFactors = FALSE)
@@ -447,12 +456,12 @@ instance <- unlist(followers_url$user_instance)
 instance_count <- table(instance)
 instance_count_dataframe <- as.data.frame(instance_count)
 colnames(instance_count_dataframe) <- c("instance", "nombre")
-instance_count_dataframe <- instance_count_dataframe %>%
+instance_count_dataframe <- instance_count_dataframe %>% # affiche le nombre d'utilisateurices par instances et trie les instances par ordre décroissant d'utilisateurices
   arrange(desc(nombre))
-head_instance_count_dataframe <- head(instance_count_dataframe, n=12)
+head_instance_count_dataframe <- head(instance_count_dataframe, n=12) # sélectionne les 12 instances les plus représentées
 print(head_instance_count_dataframe)
 
-bsky <- instance_count_dataframe$nombre[which(instance_count_dataframe$instance == "bsky.brid.gy/r/https")]
+bsky <- instance_count_dataframe$nombre[which(instance_count_dataframe$instance == "bsky.brid.gy/r/https")] #fait le compte des utilisateurs de Bluesky qui suivent le compte concerné
 
 ```
 
@@ -463,22 +472,24 @@ Comme nous avons immédiatement activé un pont avec Bluesky, notre compte peut 
 
 
 ```{r traitement de la colonne content, include=FALSE}
-# Load necessary libraries
+
 library(rvest)
 library(purrr)
 
-# Assuming dataframe2 is your dataframe and 'content' is the column with HTML text
+# Ce code prend chaque toot et le parse pour en supprimer les balises html
 dataframe$content <- map_chr(dataframe$content, function(x) {
   tryCatch({
-    # Read the HTML content as text and extract plain text
     read_html(x) %>% html_text()
   }, error = function(e) {
-    # Return the original content if there is an error
+    # renvoie le message original si une erreur est rencontrée
     return(x)
   })
 })
+# calcul du nombre moyen de caractères des messages envoyés
+mean_content <- as.integer(mean(nchar(dataframe$content)))
+print(mean_content)
 
-write_csv(dataframe, "SO_univrennes_toots_content.csv")# Now dataframe2$content will have the text without HTML tags
+write_csv(dataframe, "SO_univrennes_toots_content.csv")# crée un fichier csv avec tous les messages épurés des tags html
 ```
 
 
@@ -490,23 +501,23 @@ Nos actualités sont boostées par plusieurs de nos followers. Bien entendu l'é
 
 library(rtoot)
 
-# Account ID of the main account
+# définition de l'ID (remplacer par votre ID)
 id <- "112370075539544475"
 
-# Fetch the followers list
+# Récupération de la liste des followers
 followers_list <- get_account_followers(id)
 
-# Check structure of followers_list
+# vérification de la liste des followers
 if (!is.null(followers_list) && "id" %in% names(followers_list)) {
-  # Ensure display_name exists and has the correct length
+  # s'assure que display_name existe et a une longueur correcte
   if (!"display_name" %in% names(followers_list)) {
     followers_list$display_name <- rep("", length(followers_list$id))
   }
 
-  # Function to count followers for each user with error handling
+  # Fonction qui compte les followers pour chaque ID de followers avec gestion des erreurs possibles
   count_followers <- function(follower_id) {
     user_info <- tryCatch(
-      get_account(follower_id), # Use get_account for specific user details
+      get_account(follower_id), # Utiliser get_account pour récupérer les informations sur les comptes du follower
       error = function(e) {
         warning(paste("Error fetching data for user ID:", follower_id))
         return(NULL)
@@ -519,22 +530,20 @@ if (!is.null(followers_list) && "id" %in% names(followers_list)) {
     }
   }
 
-  # Iterate over followers and count their followers
+  # Itération de cette requête pour récupérer les followers de chaque follower
   follower_counts <- sapply(followers_list$id, count_followers)
 
-  # Ensure lengths match before creating data frame
+  # alignement des colonnes avnat constitution du dataframe
   if (length(follower_counts) == length(followers_list$id)) {
-    # Create a data frame to display follower counts
+    # création d'un datagrame pour afficher les followers en fonction de leur audience (ceux qui ont le plus de followers apparaissent en haut de la liste)
     result <- data.frame(
       follower_name = followers_list$display_name,
       follower_count = follower_counts,
       stringsAsFactors = FALSE
-    )
+    ) #affichage des résultats
 
-    # View the results
-    # result <- result[order(-result$follower_count),]
-    #print(result)
-    write.csv(result, "followers_count.csv")
+   
+    write.csv(result, "followers_count.csv") #création d'un fichier CSV avec l'influence (en nombre de followers) de chaque follower
   } else {
     stop("Mismatch in lengths between followers_list and follower_counts.")
   }
@@ -549,7 +558,7 @@ if (!is.null(followers_list) && "id" %in% names(followers_list)) {
 ```{r ordonnancement activité followers, echo=FALSE}
 result2 <-read.csv("followers_count.csv")
 result2 <- result2[order(-result$follower_count),]
-head_result2 <- head(result2, n=10)
+head_result2 <- head(result2, n=10) # limitation du nombre de followers à 10 dans le tableau créé (les 10 followers qui ont eux-mêmes le plus de followers)
 print(head_result2)
 
 ```
@@ -563,7 +572,7 @@ Dans cette partie, nous nous intéressons aux messages que envoyons sur Mastodon
 Le code emprunté pour générer ce graphique provient de la présentation des développeurs de Rtoot que nous avons déjà citée (@schochSoftwarePresentationRtoot2023a)
 
 ```{r distribution longueur toots, echo=FALSE}
-library(tidyverse)
+library(tidyverse) # génération du graphe de distribution "tree" de la langueur des messages. Cette représentation comporte une erreur car les longueurs indiquées sont fréquemment au dessus de la limtite des 500 caractères autorisée par l'instance. A corriger. voir https://doi.org/10.1177/20501579231176678
 library(dplyr)
 extract_application <- function(application) {
   if (length(application) == 0) { 
@@ -574,7 +583,7 @@ extract_application <- function(application) {
 
 
 ```{r eval=FALSE, include=FALSE}
-library(tidyverse)
+library(tidyverse) # constitution du graphique de distribution en fonction de la longueur des messages (tree.png)
 library(ggplot2)
 dataframe <- get_account_statuses(id, limit = 300L) 
 tree <- dataframe %>% mutate(interface = map_chr(application, extract_application), length = nchar(content)) %>% filter(!is.na(interface)) %>% ggplot(aes(x = interface, y = length)) + geom_dotplot(binaxis = "y", stackdir = "center", dotsize = 0.5)
@@ -585,7 +594,7 @@ dev.off()
 
 
 ![](images/tree.png)
-L'instance qui héberge notre compte Mastodon.social a une limite de 500 caractères par message. Les toots de SO_UnivRennes ont en moyenne une longueur de **292 caractères**
+L'instance qui héberge notre compte Mastodon.social a une limite de 500 caractères par message. Les toots de SO_UnivRennes ont en moyenne une longueur de <div class="blue">`r mean_content` caractères</div>
 
 ```{r eval=FALSE, include=FALSE}
 dataframe %>%
@@ -598,11 +607,6 @@ dataframe %>%
   geom_dotplot(binaxis = "y", stackdir = "center", dotsize = 0.5)
 ```
 
-
-```{r longueur moyenne toots, eval=FALSE, include=FALSE}
-toot_length <- dataframe%>%summarise(mean(length(application)))
-print(toot_length)
-```
 
 
 ### 2.5.2 Liste des hashtags utilisés 
@@ -674,12 +678,12 @@ language_pie <- data.frame(
 ```
 
 ```{r graphique langues, echo=FALSE}
-# Create the pie chart
+# réalise un camembert avec les langues utilisées dans les statuts
 ggplot(language_pie, aes(x = "", y = count, fill = language)) +
-  geom_col(width = 1) + # Bar chart
-  coord_polar(theta = "y") + # Convert to pie chart
-  labs(title = "Language Distribution", x = NULL, y = NULL) +
-  theme_void() + # Remove unnecessary chart elements
+  geom_col(width = 1) + # réalise un graphique en bar
+  coord_polar(theta = "y") + # Convertit ce graphique en camembert
+  labs(title = "Distribution des messages par langues", x = NULL, y = NULL) +
+  theme_void() + # Supprimer les éléments non essentiels pour l'affichage du graphique
   theme(legend.title = element_blank())
 ```
 
@@ -694,16 +698,36 @@ Voici quelques personnes à qui nous avons répondu dernièrement sur le réseau
 #library(rtoot)
 #id <- "112370075539544475"
 usernames <- sapply(reply_to, function(id) {
-  account <- get_account(id)  # Fetch account details for each ID
-  return(account$acct)        # Extract and return the username
+  account <- get_account(id)  # récupère les informations pour chaque ID
+  return(account$acct)        # Extrait et renvoie les ID 
 })
-handles_only <- usernames[grep("@", usernames)]
-unique_handles <- unique(handles_only)
-print(unique_handles)
+handles_only <- usernames[grep("@", usernames)] # supprime les ID dont les noms d'utilisateur n'ont pas pu être trouvés (tous ceux qui ne comportent pas de @)
+unique_handles <- unique(handles_only) # supprime les doublons
+print(unique_handles) # imprime la liste des utilisateurs uniques auxquels on a envoyé un message de réponse
 
 ```
 
 Des échanges très riches dans la grande majorité des cas et qui installent des conversations dans le temps. Nous espérons pouvoir les prolonger sur des sujets divers avec les mêmes utilisateurices ou avec d'autres. 
+
+# Conclusion
+
+Ce document répond à une demande initiale de fournir un bilan de notre activité sur Mastodon depuis la création du compte SO_UnivRennes. 
+Il nous a paru impossible de ne rendre que des indicateurs chiffrés sans revenir sur l'ensemble de notre démarche qui nous a conduits à ouvrir ce compte. 
+Le bilan quantitatif est bien entendu présent dans cette étude et il peut être très rapidement remis à jour en exécutant le code sous-jacent à ce texte. 
+Ce code peut d'ailleurs être récupéré sur Software Heritage pour servir à analyser l'activité de n'importe quel autre usager ou usagère d'un compte sur Mastodon. 
+Un environnement virtuel est à disposition du réutilisateur ou de la réutilisatrice pour en permettre la réplicatibilité a minima. 
+
+A travers cette étude, nous avons voulu montrer que la volonté d'être là où nos usagers sont ne peut constituer la seule politique, ni même la politique principale en matière de communication pour les réseaux sociaux ni d'une bibliothèque ni plus largement d'une institution de recherche. 
+Nos étudiants, enseignants, chercheurs n'ont pas forcément le temps ni la culture numérique requise pour s'orienter dans l'offre de plateformes et quelque soit leur vigilance et leur exigence en matière d'éthique de la conversation et de recherche de vérité peuvent facilement se faire prendre par les serveurs sirènes de Meta, de LinkedIn ou de X jusqu'à ce que leur présence sur ces plateformes que Thierry Crouzet définit comme capitalistes donc centralisatrices, centralisatrices donc potentiellement fascisantes leur devienne intolérable et qu'il leur faille s'en arracher à nouveau en perdant à nouveau tout l'acquis d'années passées à entretenir des liens et une communauté d'abonnés @crouzetTechnofascismeEstilFatalite2025. 
+
+C'est notre défaut d'intérêt pour le numérique (ce dernier étant vu toujours comme un  moyen et jamais comme un objet d'intérêt en soi) ou bien notre cécité sur la manière dont le capitalisme de plateforme entremêle jusqu'à les rendre indissociables le numérique, le politique et l'économique qui font que nous avons le sentiment de naviguer dans les ténèbres. Attirés comme des papillons par la lumière de réseaux dont les propriétaires se considèrent eux-mêmes comme des Soleils, nous errons longuement autour de ce feu jusqu'à nous y brûler :
+
+> In girum imus nocte ecce et consumimur igni [⁵]
+
+Seule une infrastructure décentralisée peut nous éviter de nous perdre et de consumer notre énergie créatrice et notre goût d'apprendre des autres dans ces feux de poubelles. Car la centralisation profite à la privatisation des données tandis qu'un réseau décentralisé permet de rendre à nos moyens de communication la dimension d'un Commun. 
+
+
+
 
 
 # Références
@@ -715,3 +739,4 @@ Des échanges très riches dans la grande majorité des cas et qui installent de
 [²]: Collusion des Tech Bros, magnats de la technologie américaine pour soutenir une présidence qui sert leurs intérêts économiques et leur permet d'empêcher la constitution de lois anti-trust.
 [³]: extrait de la charte de modération de Piaille : Il est interdit de publier ou diffuser intentionnellement des propos diffamatoires, calomnieux, ainsi que toute désinformation avec intention de tromper. Voir son application ici : https://piaille.fr/@CelianGodefroid/113865530173097447 
 [⁴]: Elon Musk invite sur X les Allemands à voter pour l'AFD, un parti notoirement raciste et anti-démocratique adapte de la déportation des personnes issues de l'immigration vers des pays Africains.
+[⁵]: Nous tournoyons dans la nuit, et nous voilà consumés par le feu 
