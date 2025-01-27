@@ -1,6 +1,6 @@
 ---
-title: "Bilan d'une année d'expérience avec Mastodon"
-subtitle: "activité du compte Mastodon du service ARDEL"
+title: "Bilan de huit mois d'expérience avec Mastodon"
+subtitle: "De l'intérêt pour une bibliothèque de recherche à investir le Fédivers"
 author: "Damien Belvèze" 
 output: 
   html_document:
@@ -65,6 +65,18 @@ count_reply_to <- length(reply_to)
 
 ```
 
+
+# Introduction
+
+Le présent document a pour ambition de tirer un premier bilan de l'expérience du service ARDEL sur Mastodon. Le compte SO_UnivRennes a été mis en place en mai 2024, et cette expérience n'est forte que de sept mois (en excluant la pose estivale), mais elle est déjà riche et nous pensons qu'elle peut profiter à d'autres au moment où beaucoup de bibliothèques et d'institutions de recherche pensent à quitter X ou Meta pour des réseaux plus éthiques. 
+
+En tant que bilan, il contient des chiffres d'activités issues de statistiques réalisées avec le logiciel R et le package Rtoot. Le code sous-jacent à cette publication peut être [récupéré en ligne sur une archive](https://archive.softwareheritage.org/swh:1:dir:1faa0d67e332b9d34a8b292ac1f06d7ce0d41028;origin=https://github.com/damienbelveze/Mastodo_SO_UnivRennes;visit=swh:1:snp:4450e43e0cc56bb25c2093d8c769c552a8f46a0e;anchor=swh:1:rev:552ca3ae10590a493a09375f2d6d2d82ca23c457) et utilisé pour mesure l'activité d'autres comptes, pourvu qu'on en ait la clé. Les chiffres qu'elle contient peuvent être mis à jour simplement en exécutant à nouveau ce code. 
+Nous y avons ajouté une analyse puisée aux sources de Wikidata sur la manière dont bibliothèques et institutions de recherche investissent les réseaux sociaux couramment présentés comme alternatives à X/Twitter ou Facebook/Meta. 
+
+Pour autant, ce document a aussi une dimension apologétique et vise à expliquer pour quelles raisons ARDEL a souhaité investir Mastodon comme seul réseau social. 
+Notre but est de faire une première synthèse de certaines réflexions que le phénomène #Helloquittex a récemment suscitées et qui vont dans le même sens : Le Fédivers pour lequel Mastodon a été conçu n'est pas une alternative parmi d'autres à des réseaux toxiques que nous souhaitons quitter. Elle est la seule alternative possible à terme, la seule dont la structure et les valeurs soient conformes aux ambitions scientifiques et démocratiques d'une université moderne. 
+
+
 # 1. Pourquoi nous avons choisi Mastodon
 
 ## 1.1 Périmètre du compte
@@ -93,13 +105,23 @@ Nous pensons toutefois que ces conversations ne peuvent être enrichissantes que
 Par transparence, nous entendons donc d'abord **transparence de l'algorithme de distribution des messages** : 
 Nous devons nous assurer que tout ce qui est posté par un.e utilisatreur.ice du réseau nous parvient sans filtre, à la manière d'un flux RSS qui reproduit fidèlement tout ce qui est posté par la personne qu'on suit. Ce n'était plus le cas sur Twitter déjà bien avant qu'Elon Musk ne le rachète. Mastodon n'est qu'un logiciel dont le code source est accessible. Le réseau social Fedivers dépend d'un protocole (ActivityPub) qui préexistait au logiciel Mastodon et son code est également en accès libre. 
 
+Cette transparence de l'algorithme distingue Mastodon de tous les autres réseaux sociaux qui promeuvent les recommandations, le placement de contenu, la viralité par des moyens techniques. A tel point que Dominique Boullier proposer de reconsidérer Meta, LinkedIn, Bluesky et X comme des **médias sociaux** ayant une responsabilité éditoriale, et non pas comme des **réseaux sociaux**, dans la mesure où,  au lieu d'exploiter les liens faibles pour susciter de l'engagement et des mouvements de masse, comme le font les *medias sociaux*, les véritables *réseaux sociaux* permettent de tisser des liens plus concrêts basés sur la contribution et l'échange entre pairs (@boullierDistribueFederalMonde2025).  
+C'est ce qui nous a plu est au départ dans Facebook avant qu'il ne devienne évident -assez tôt à vrai dire pour les personnes attentives- que le réseau au pouce bleu était fondé sur de toutes autres valeurs.
+
+Mastodon permet donc de créer de petites communautés distribuées. Cette taille modeste des communautés convient bien à des services comme le nôtre qui ne cherchent pas prioritairement à influencer ou faire parler de lui, mais d'abord à informer ses membres et à entretenir des discussions avec eux, voire dans certains cas, à leur apporter une aide directe en les renvoyant vers les ressources utiles que nous savons adaptées à nos interlocuteurices. 
+Investir du temps dans Mastodon, c'est aussi renoncer aux métriques telles que le nombre de *likes* (il n'y a pas de comptages de favoris visibles directement sur la plateforme). Certaines fonctionnalités de Twitter, comme le commentaire de tweet (rebooster et en même temos commenter) ont été supprimés en raison de leur toxicité avérée. 
+
+
 ### 1.2.2 Communiquer, c'est faire du Commun
 
 Nous souhaitons par ailleurs investir du temps dans un Commun, car nous considérons que communiquer, ce n'est pas seulement échanger des messages, mais aussi contribuer au milieu (medium) qui permettra à ces échanges d'avoir lieu. Communiquer, comme le rappelle Arthur Perret, c'est aussi bâtir du Commun (@perretFaireCommun2023a), a contrario des réseaux sociaux centralisés qui privatisent (de la donnée personnelle) et privilégient des points de vue au détriment d'autres par des algorithmes opaques et déloyaux. 
 
 Créer du commun, c'est précisément interroger le medium qu'on utilise, ses règles, ses principes de modération, son articulation avec les médias voisins quand elle est techniquement possible. Par exemple, les instances de Mastodon peuvent techniquement communiquer avec celles de Threads (Meta), mais ne le souhaitent pas pour éviter que le Fédivers ne soit victime de la part de Meta d'une manoeuvre de style **embrace, extend and extinguish**. 
 
-Avec Mastodon, il n'y a pas de propriétaire qui décide de cette interopérabilité pour tout le monde. L'administrateurice d'une instance peut rendre le choix de l'ouverture possible à ses utilisateurices (sans pouvoir la rendre obligatoire) ou bien proposer que la connexion ne soit pas possible pour la raison stratégique évoquée. Ces débats ont lieu au sein des instances avec les utilisateurices. Il n'y pas de procédure de vote à notre connaissance, mais les personnes mécontentes de la décision prise peuvent sans perdre l'accès à leur communauté de followers quitter cette instance pour une autre qui correspond mieux à leurs options d'ouverture (ou de fermeture). Cet exemple, montre qu'il est possible de bâtir des Communs avec Mastodon, alors qu'un gouvernement centralisé dans les mains d'un propriétaire qui dispose de toutes les règles et décide de tous les paramétrages obère d'emblée cette construction.  
+Avec Mastodon, il n'y a pas de propriétaire qui décide de cette interopérabilité pour tout le monde. L'administrateurice d'une instance peut rendre le choix de l'ouverture possible à ses utilisateurices (sans pouvoir la rendre obligatoire) ou bien elle peut proposer que la connexion ne soit pas possible pour la raison stratégique évoquée. Ces débats ont lieu au sein des instances avec les utilisateurices. Il n'y pas de procédure de vote à notre connaissance, mais les personnes mécontentes de la décision prise peuvent sans perdre l'accès à leur communauté de followers quitter cette instance pour une autre qui correspond mieux à leurs options d'ouverture (ou de fermeture). Mastodon n'exclut pas le risque de tyrannies locales et de "modération à la carte", mais si une instance ne convient plus, on n'en reste pas captif/ves contrairement à ce qui se passe sur X ou Meta. 
+
+
+
 
 ### 1.2.3 La décentralisation, l'atout maître de Mastodon
 
@@ -135,7 +157,8 @@ Ajoutons à cela que des ponts techniques (*bridges*) existent entre les protoco
 
 ### 1.3.1 Threads
 
-Threads partage avec Mastodon un même protocole, mais les règles y sont très différentes. l'algorithme du réseau expose du contenu provenant de comptes qu'on ne suit pas et il est impossible pour l'usager qu'il en soit autrement, on ne peut donc parler d'un algorithme loyal ni transparent. La modération y sera sous peu soumise aux nouvelles régles de "modération" imposées aux équipes de Meta : la modération des contenus ne sera plus confiée à des officines extérieures (rédaction de journaux) mais aux usagers eux-mêmes qui décideront collaborativement de l'acceptabilité d'un post ; un Commun ? cette mesure déjà appliquée à d'autres réseaux de la *Broligarchie*[²] n'aura pas pour effet de garantir la liberté d'expression contre les sachants, mais de déplacer la fenêtre d'Overton encore plus vers la droite (et de la fermer à gauche) selon les intérêts du moment du PDG de Meta.
+Threads partage avec Mastodon un même protocole, mais les règles y sont très différentes. l'algorithme du réseau expose du contenu provenant de comptes qu'on ne suit pas et il est impossible pour l'usager qu'il en soit autrement, on ne peut donc parler d'un algorithme loyal ni transparent. Le filtrage des messages discutables y sera sous peu soumise aux nouvelles régles de "modération" imposées aux équipes de Meta : la modération des contenus ne sera plus confiée à des officines extérieures (rédactions de journaux) mais aux usagers eux-mêmes qui décideront collaborativement de l'acceptabilité d'un post ; un Commun ? cette mesure déjà appliquée à d'autres réseaux de la *Broligarchie*[²] disqualifie l'expertise et le rapport à la vérité scientifique ou factuelle (sans parler de la plus élémentaire décence) au profit d'un monde imaginaire formaté par les obsessions et les fantasmes de la majorité des utilisateurices d'une plateforme. Un tel type de modération est contradictoire avec l'*ethos* d'une institution de recherche. 
+
 Bien sûr il y a aussi des instances sur Mastodon tenues par des libertariens et des climatosceptiques, mais nul n'est obligé de s'y inscrire. Il y a tant d'autres instances possibles où atterrir. Piaille par exemple régule les échanges et bannit les contenus ouvertement climatosceptiques en tant que "désinformation" conformément à sa charte [³]. 
 
 <img src="images/Petain.jpg" alt="Le maréchal Pétain écoutant la voix de son maître, caricature signée Arthur Szyk, New York, 1941. https://commons.wikimedia.org/wiki/File:Arthur_Szyk_-_Le_mar%C3%A9chal_P%C3%A9tain_%C3%A9coutant_la_voix_de_son_ma%C3%AEtre.jpg" />
@@ -713,16 +736,15 @@ Des échanges très riches dans la grande majorité des cas et qui installent de
 
 Ce document répond à une demande initiale de fournir un bilan de notre activité sur Mastodon depuis la création du compte SO_UnivRennes. 
 Il nous a paru impossible de ne rendre que des indicateurs chiffrés sans revenir sur l'ensemble de notre démarche qui nous a conduits à ouvrir ce compte. 
-Le bilan quantitatif est bien entendu présent dans cette étude et il peut être très rapidement remis à jour en exécutant le code sous-jacent à ce texte. 
-Ce code peut d'ailleurs être récupéré sur Software Heritage pour servir à analyser l'activité de n'importe quel autre usager ou usagère d'un compte sur Mastodon. 
+Comme indiqué en introduction, le bilan quantitatif est bien entendu présent dans cette étude et il peut être très rapidement remis à jour en exécutant le code sous-jacent à ce texte. 
+Ce code [peut d'ailleurs être récupéré sur Software Heritage](https://archive.softwareheritage.org/swh:1:dir:1faa0d67e332b9d34a8b292ac1f06d7ce0d41028;origin=https://github.com/damienbelveze/Mastodo_SO_UnivRennes;visit=swh:1:snp:4450e43e0cc56bb25c2093d8c769c552a8f46a0e;anchor=swh:1:rev:552ca3ae10590a493a09375f2d6d2d82ca23c457) pour servir à analyser l'activité de n'importe quel autre usager ou usagère d'un compte sur Mastodon. 
 Un environnement virtuel est à disposition du réutilisateur ou de la réutilisatrice pour en permettre la réplicatibilité a minima. 
 
 A travers cette étude, nous avons voulu montrer que la volonté d'être là où nos usagers sont ne peut constituer la seule politique, ni même la politique principale en matière de communication pour les réseaux sociaux ni d'une bibliothèque ni plus largement d'une institution de recherche. 
 Nos étudiants, enseignants, chercheurs n'ont pas forcément le temps ni la culture numérique requise pour s'orienter dans l'offre de plateformes et quelque soit leur vigilance et leur exigence en matière d'éthique de la conversation et de recherche de vérité peuvent facilement se faire prendre par les serveurs sirènes de Meta, de LinkedIn ou de X jusqu'à ce que leur présence sur ces plateformes que Thierry Crouzet définit comme capitalistes donc centralisatrices, centralisatrices donc potentiellement fascisantes leur devienne intolérable et qu'il leur faille s'en arracher à nouveau en perdant à nouveau tout l'acquis d'années passées à entretenir des liens et une communauté d'abonnés @crouzetTechnofascismeEstilFatalite2025. 
 
-C'est notre défaut d'intérêt pour le numérique (ce dernier étant vu toujours comme un  moyen et jamais comme un objet d'intérêt en soi) ou bien notre cécité sur la manière dont le capitalisme de plateforme entremêle jusqu'à les rendre indissociables le numérique, le politique et l'économique qui font que nous avons le sentiment de naviguer dans les ténèbres. Attirés comme des papillons par la lumière de réseaux dont les propriétaires se considèrent eux-mêmes comme des Soleils, nous errons longuement autour de ce feu jusqu'à nous y brûler :
-
-> In girum imus nocte ecce et consumimur igni [⁵]
+Pour Dominique Boullier, cette incapacité à miser sur des infrastructures fédérées et distribuées telles que Mastodon est le reflet, et peut être aussi la conséquence, de régimes politiques de plus en plus centralisés, bonapartistes et personnalisés, à l'image de notre Cinquième République finissante. 
+On peut aussi y voir le produit d'un manque général de culture  numérique dans les programmes scolaires et universitaires : le numérique est trop souvent perçu comme un  moyen et jamais comme un objet d'étude et intérêt en soi.  Ou bien notre cécité vient-elle du caractère de plus en plus inextricable des liaisons que le capitalisme de plateforme entremêle tisse entre le numérique, le politique et l'économique. Tout cela fait que nous avons le sentiment de naviguer dans les ténèbres. Pour reprendre une image de Virgile ravivée depuis par Guy Debord et dernièrement par Thierry Crouzet, nous restons Attirés comme des papillons par la lumière de réseaux dont les propriétaires se considèrent eux-mêmes comme des Soleils et nous errons longuement autour de ces feux jusqu'à nous y brûler [⁵] 
 
 Seule une infrastructure décentralisée peut nous éviter de nous perdre et de consumer notre énergie créatrice et notre goût d'apprendre des autres dans ces feux de poubelles. Car la centralisation profite à la privatisation des données tandis qu'un réseau décentralisé permet de rendre à nos moyens de communication la dimension d'un Commun. 
 
@@ -739,4 +761,4 @@ Seule une infrastructure décentralisée peut nous éviter de nous perdre et de 
 [²]: Collusion des Tech Bros, magnats de la technologie américaine pour soutenir une présidence qui sert leurs intérêts économiques et leur permet d'empêcher la constitution de lois anti-trust.
 [³]: extrait de la charte de modération de Piaille : Il est interdit de publier ou diffuser intentionnellement des propos diffamatoires, calomnieux, ainsi que toute désinformation avec intention de tromper. Voir son application ici : https://piaille.fr/@CelianGodefroid/113865530173097447 
 [⁴]: Elon Musk invite sur X les Allemands à voter pour l'AFD, un parti notoirement raciste et anti-démocratique adapte de la déportation des personnes issues de l'immigration vers des pays Africains.
-[⁵]: Nous tournoyons dans la nuit, et nous voilà consumés par le feu 
+[⁵]: *In girum imus nocte ecce et consumimur igni* (il s'agit d'un palindrome) "Nous tournoyons dans la nuit, et nous voilà consumés par le feu". 
