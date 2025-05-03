@@ -1,5 +1,5 @@
 ---
-title: "Bilan de huit mois d'expérience avec Mastodon"
+title: "Bilan d'une année d'expérience avec Mastodon"
 subtitle: "De l'intérêt pour une bibliothèque de recherche à investir le Fédivers"
 author: "Damien Belvèze" 
 output: 
@@ -13,7 +13,7 @@ output:
 css: style.css
 bibliography: biblio.bib
 csl: nature.csl
-date: "2025-01-15"
+date: "3 mai 2025"
 ---
 
 
