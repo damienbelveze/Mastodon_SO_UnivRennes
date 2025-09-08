@@ -33,12 +33,12 @@ library(dplyr)
 
 last_run_time <- Sys.time() # marque le moment d'exécution du script
 id <- "112370075539544475"
-followers <- get_account_followers(id, limit = 400L) # récupération des followers. une limite doit être fixée pour que le script fonctionne et récupère tous les messages, la situer à la centaine supérieure par rapport au nombre de messages envoyés d'après le profil du compte
-following <- get_account_following(id, limit = 400L) 
+followers <- get_account_followers(id, limit = 1000L) # récupération des followers. une limite doit être fixée pour que le script fonctionne et récupère tous les messages, la situer à la centaine supérieure par rapport au nombre de messages envoyés d'après le profil du compte
+following <- get_account_following(id, limit = 1000L) 
 lists <- get_account_lists(id, token = NULL, parse = TRUE) # code utilisé pour récupérer les listes dans lesquelles a été intégré le compte étudié - nous ne sommes pas arrivés à la faire fonctionner
 #relationships <- get_account_relationships(id, limit = 300L) Les relationships concernent les relations que le compte étudié entretient avec d'autres comptes. Par exmple le blocage est un type de relation (négative certes)
-dataframe <- get_account_statuses(id, limit = 400L) # récupération des messages - une limite doit être fixée pour que le script fonctionne et récupère tous les messages, la situer à la centaine supérieure par rapport au nombre de messages envoyés d'après le profil du compte
-toots <- get_account_statuses(id, exclude_reblogs = TRUE, limit = 400L) #récupération des messages moins les boosts (les messages d'autrui que nous avons reposés). Nécessaire pour déterminer par soustraction de l'ensemble des messages, les messages qui ont été boostés. 
+dataframe <- get_account_statuses(id, limit = 1000L) # récupération des messages - une limite doit être fixée pour que le script fonctionne et récupère tous les messages, la situer à la centaine supérieure par rapport au nombre de messages envoyés d'après le profil du compte
+toots <- get_account_statuses(id, exclude_reblogs = TRUE, limit = 1000L) #récupération des messages moins les boosts (les messages d'autrui que nous avons reposés). Nécessaire pour déterminer par soustraction de l'ensemble des messages, les messages qui ont été boostés. 
 sent <- as.integer(length(dataframe$id)) 
 toots <- as.integer(length(toots$id))
 boosts <- (sent - toots)
