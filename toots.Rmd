@@ -1,0 +1,49 @@
+---
+title: "analyse envois sur Mastodon"
+date: 20250926
+author: "Damien Belvèze"
+---
+
+```{r}
+library(rtoot)
+
+auth_setup() # authentification de l'utilisateurice
+# la documentation est accesible icihttps://www.rdocumentation.org/packages/rtoot/versions/0.3.4
+id <- search_accounts("SO_UnivRennes")
+print(id)
+```
+```{r}
+library(purrr)
+library(rvest)
+library(readr)
+options(readr.show_col_types = FALSE) #voir ici https://github.com/tidyverse/readr/issues/1250
+library(tidyverse)
+library(dplyr)
+df <- get_account_statuses("112370075539544475", limit = 600L) # chnager la limite po
+head(df$content, 1)
+df$content <- map_chr(df$content, function(x) {
+  tryCatch({
+    read_html(x) %>% html_text()
+  }, error = function(e) {
+    # renvoie le message original si une erreur est rencontrée
+    return(x)
+  })
+})
+head(df$content, 4)
+write_csv(df, "SO_univrennes_toots.csv") # création d'un fichier CSV de messages envoyés
+
+```
+
+
+
+
+```{r récupération pays de découverte, echo=TRUE, message=FALSE, warning=FALSE}
+library(stringr)
+#toots <-df$content
+pattern <- "(?<=#)(\\w+)" # capture le mot qui vient après l'expression régulière "#"
+df <- df %>%
+  mutate(
+   hashtags = str_extract(content, pattern)
+  )
+head(df[, 30:31], 10)
+```
