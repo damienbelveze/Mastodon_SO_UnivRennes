@@ -12,6 +12,8 @@ auth_setup() # authentification de l'utilisateurice
 id <- search_accounts("SO_UnivRennes")
 print(id)
 ```
+
+
 ```{r}
 library(purrr)
 library(rvest)
